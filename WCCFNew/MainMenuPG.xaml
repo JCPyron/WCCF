@@ -1,0 +1,37 @@
+﻿<Page x:Class="WCCFNew.MainMenuPG"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WCCFNew"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="500"
+      Title="Main Menu">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>  
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Row="1" Grid.ColumnSpan="2" Source="Media\logo.png"/>
+        <Button x:Name="EMailBTN" Grid.Column="0" Grid.Row="2" Style="{StaticResource MainMenuButtons}" Content="E-Mail" Click="EMailBTN_Click"/>
+        <Button x:Name="TwitterBTN" Grid.Column="1" Grid.Row="2" Style="{StaticResource MainMenuButtons}" Content="Twitter" Click="TwitterBTN_Click"/>
+        <Button x:Name="FacebookBTN" Grid.Column="0" Grid.Row="3" Style="{StaticResource MainMenuButtons}" Content="Facebook" Click="FacebookBTN_Click"/>
+        <Button x:Name="GoogleCalenderBTN" Grid.Column="1" Grid.Row="3"  Style="{StaticResource MainMenuButtons }" Content="Google Calender" Click="GoogleCalenderBTN_Click"/>
+        <Button x:Name="QuickPostBTN" Grid.Row="4" Grid.ColumnSpan="2"  Style="{StaticResource MainMenuButtons }" Content="Quick Post"  Click="QuickPost_Click"/>
+            
+        <Border Grid.ColumnSpan="2" Style="{StaticResource headerBoarderStyle}"/>
+        <Border Grid.Row="5" Grid.ColumnSpan="2"  Style="{StaticResource footerBoarderStyle}"/>
+        <Label x:Name="MainMenuLBL" Grid.Row="0" Grid.ColumnSpan="2" Content="Main Menu" FontSize="33.333" Style="{StaticResource LabelInHead}" />
+        
+
+    </Grid>
+</Page>

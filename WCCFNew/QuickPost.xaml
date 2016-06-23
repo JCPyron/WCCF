@@ -1,0 +1,108 @@
+﻿<Page x:Class="WCCFNew.QuickPost"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WCCFNew"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="500">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource headerBoarderStyle}"/>
+            <Label x:Name="QuickPostLBL" Grid.Column="0" Content="Quick Post" Style="{StaticResource LabelInHead}" FontSize="33.333"/>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width=".5*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width=".5*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width=".5*"/>
+                </Grid.ColumnDefinitions>
+
+
+            </Grid>
+
+
+            <Border Grid.Row="4" Style="{StaticResource footerBoarderStyle}">
+                <Button x:Name="btnSelectPhoto" Style="{StaticResource buttonStyle}" Content="Browse" Click="btnSelectPhoto_Click"/>
+            </Border>
+            <Grid Grid.Row="1">
+
+                <Menu HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" FontSize="16" FontWeight="Bold" Foreground="#FF333333">
+                    <MenuItem Name="FacebookAccounts" Header="_Facebook Accounts" HorizontalContentAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+                    <MenuItem Name="TwitterAccounts" Header="_Twitter Accounts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <MenuItem Name="EMailAccounts" Header="_E-Mail Accounts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Menu>
+
+                <!--<ComboBox Name="FacebookCombo" Grid.Column="0" Text="Facebook Accounts" Style="{StaticResource ComboBox}"/>
+
+                <ComboBox Name="TwitterCombo" Grid.Column="1" Text="Twitter Accounts" Style="{StaticResource ComboBox}"/>
+
+                <ComboBox Name="EMailCombo" Grid.Column="2" Text="E-Mail Accounts" Style="{StaticResource ComboBox}" />-->
+            </Grid>
+
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+                <TextBox x:Name="EventText" Grid.Column="0" Grid.Row="1" Style="{StaticResource textBox}" Margin="10,10,10,10" TextChanged="EventText_TextChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                <TextBox x:Name="TwitterText" Grid.Column="1" Grid.Row="1" Style="{StaticResource textBox}" Margin="10,10,10,10" TextChanged="TwitterText_TextChanged" />
+                <Label x:Name="MainPostLBL" Content="Main Post" Grid.Column="0" Style="{StaticResource LabelNotIn}" FontSize="20"/>
+                <Label x:Name="TwitterPostLBL" Content="Twitter Post" Grid.Column="1" Style="{StaticResource LabelNotIn}" FontSize="20"/>
+
+            </Grid>
+
+            <Grid Grid.Row="3" Height="30" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="RemaininChar" Grid.Column="2" VerticalContentAlignment="Center" HorizontalAlignment="Center"/>
+                <Label x:Name="lblPhotoSelected" Content="Photo Selected" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Margin="202,6,196,0" Width="91" Grid.ColumnSpan="2" Background="{x:Null}" Visibility="Hidden"/>
+            </Grid>
+
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="MainMenuBTN" Grid.Column="0" Content="Main Menu" Style="{StaticResource buttonStyle}" Click="MainMenuBTN_Click"/>
+
+
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="SendMSGBTN" Grid.Column="1" Content="Submit" Style="{StaticResource buttonStyle}" Click="SendMSGBTN_Click"/>
+                    <Button x:Name="ClearMSGBTN" Grid.Column="0" Content="Clear" Style="{StaticResource buttonStyle}" Click="ClearMSGBTN_Click"/>
+                </Grid>
+
+            </Grid>
+
+
+
+        </Grid>
+    </Grid>
+
+</Page>

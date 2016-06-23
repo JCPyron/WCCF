@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12, 8.5" name="SEMDB">
+  <DataContextMoniker Name="/SEMDBDataContext" />
+  <nestedChildShapes>
+    <classShape Id="3415a5af-5a15-4a6d-83fe-9e663ae86c8e" absoluteBounds="0.875, 3, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/SEMDBDataContext/address" />
+      <nestedChildShapes>
+        <elementListCompartment Id="31404b44-b9d4-4e5c-aa1f-2737052b272d" absoluteBounds="0.89000000000000012, 3.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="eb4adb82-c720-4390-8d5d-b6191c385592" absoluteBounds="1.125, 0.5, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/SEMDBDataContext/ContactPlace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="02fa6ab2-ac75-4f42-9ff2-38aa4870f56b" absoluteBounds="1.1400000000000001, 0.96, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="dd3d9dce-24b4-4f62-aa7a-9c5748cff5a3" absoluteBounds="3, 3.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/SEMDBDataContext/ContactTime" />
+      <nestedChildShapes>
+        <elementListCompartment Id="bfaaaaf2-c37d-49c9-b85f-fae2ed79178e" absoluteBounds="3.015, 3.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f430abc4-f304-4d6e-ba35-14e2b5b9c341" absoluteBounds="5.75, 3.625, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/SEMDBDataContext/Email" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dfd046e3-bf6c-4429-9378-31a7129f090f" absoluteBounds="5.765, 4.085, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="01d6f580-3e8b-419a-ad3f-e668557a3a59" absoluteBounds="9.75, 6, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/SEMDBDataContext/SMtype" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6cb23739-cbea-4457-8a2c-ef88f39ef769" absoluteBounds="9.765, 6.46, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="45f7eaa9-60aa-4992-8386-4d1401deab9a" absoluteBounds="3.875, 5.125, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/SEMDBDataContext/Phone" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6c61b00e-1d80-4a2a-be05-6bcaa86a9260" absoluteBounds="3.89, 5.585, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4f33ab45-fbd7-42df-9435-da6be1bffbc4" absoluteBounds="8, 4.375, 2, 1.3862939453125">
+      <DataClassMoniker Name="/SEMDBDataContext/SocialMedia" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d13b4f11-eae9-4b51-b275-23679bce6f8e" absoluteBounds="8.015, 4.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(10.8750005 : 6); (10.8750005 : 5.07859587760417); (10 : 5.07859587760417)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SEMDBDataContext/SMtype/SMtype_SocialMedia" />
+      <nodes>
+        <classShapeMoniker Id="01d6f580-3e8b-419a-ad3f-e668557a3a59" />
+        <classShapeMoniker Id="4f33ab45-fbd7-42df-9435-da6be1bffbc4" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="eb5891ec-2663-4d71-a30a-92960811b498" absoluteBounds="4.875, 1.125, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/SEMDBDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d737a38f-0180-4d32-8001-2e73d4baa4c1" absoluteBounds="4.89, 1.585, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(4.875 : 2.51849609375); (0.96875 : 2.51849609375); (0.96875 : 3)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SEMDBDataContext/User/User_address" />
+      <nodes>
+        <classShapeMoniker Id="eb5891ec-2663-4d71-a30a-92960811b498" />
+        <classShapeMoniker Id="3415a5af-5a15-4a6d-83fe-9e663ae86c8e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.875 : 1.69794840494792); (3.125 : 1.69794840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SEMDBDataContext/User/User_ContactPlace" />
+      <nodes>
+        <classShapeMoniker Id="eb5891ec-2663-4d71-a30a-92960811b498" />
+        <classShapeMoniker Id="eb4adb82-c720-4390-8d5d-b6191c385592" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.875 : 2.70359537760417); (5.875 : 3.07859537760417); (5.375 : 3.07859537760417); (5.375 : 4.03929768880208); (5.23958333333333 : 4.03929768880208 : JumpStart); (5.07291666666667 : 4.03929768880208 : JumpEnd); (5 : 4.03929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SEMDBDataContext/User/User_ContactTime" />
+      <nodes>
+        <classShapeMoniker Id="eb5891ec-2663-4d71-a30a-92960811b498" />
+        <classShapeMoniker Id="dd3d9dce-24b4-4f62-aa7a-9c5748cff5a3" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(6.4375 : 2.70359537760417); (6.4375 : 3.625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SEMDBDataContext/User/User_Email" />
+      <nodes>
+        <classShapeMoniker Id="eb5891ec-2663-4d71-a30a-92960811b498" />
+        <classShapeMoniker Id="f430abc4-f304-4d6e-ba35-14e2b5b9c341" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.15625 : 2.70359537760417); (5.15625 : 5.125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SEMDBDataContext/User/User_Phone" />
+      <nodes>
+        <classShapeMoniker Id="eb5891ec-2663-4d71-a30a-92960811b498" />
+        <classShapeMoniker Id="45f7eaa9-60aa-4992-8386-4d1401deab9a" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(6.875 : 2.70238007346755); (7.25121530413662 : 3.07859537760417); (8.8124995 : 3.07859537760417); (8.8124995 : 4.375)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SEMDBDataContext/User/User_SocialMedia" />
+      <nodes>
+        <classShapeMoniker Id="eb5891ec-2663-4d71-a30a-92960811b498" />
+        <classShapeMoniker Id="4f33ab45-fbd7-42df-9435-da6be1bffbc4" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="7c89362b-9040-44b0-9a6e-a4879cbf6e07" absoluteBounds="9.75, 0.5, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/SEMDBDataContext/Face" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6e2eb67a-7c61-4fc0-8630-c252aefd5769" absoluteBounds="9.765, 0.96, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="79004999-1e86-4b31-88ab-49eb156a2690" absoluteBounds="7.5, 1, 2, 1.3862939453125">
+      <DataClassMoniker Name="/SEMDBDataContext/UMail" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3c6de405-6bd8-418a-981a-c1b59f1e47e3" absoluteBounds="7.515, 1.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a56a89d9-db25-48c9-b98f-0bafd3601682" absoluteBounds="9.625, 2.125, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/SEMDBDataContext/Twitter" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7860ae5c-a4df-494c-8402-da34a2b0213a" absoluteBounds="9.64, 2.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

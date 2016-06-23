@@ -1,0 +1,293 @@
+﻿<Page x:Class="WCCFNew.GoogleCalenderPG"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WCCFNew"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="500"
+      Title="GoogleCalenderPG">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Style="{StaticResource headerBoarderStyle}"/>
+        <Border Grid.Row="3" Style="{StaticResource footerBoarderStyle}"/>
+        <Label Grid.Row="0" Content="Google Calender Manager" Style="{StaticResource LabelInHead}" FontSize="28"/>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="btnCreate" Click="btnCreate_Click" Content="Create Event" Grid.Column="0" Style="{StaticResource buttonStyle}"/>
+            <Button Name="btnUpdate" Click="btnUpdate_Click" Content="Update Event" Grid.Column="2" Style="{StaticResource buttonStyle}"/>
+            <Button Name="btnDelete" Click="btnDelete_Click" Content="Delete Event" Grid.Column="3" Style="{StaticResource buttonStyle}"/>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.25*"/>
+                    <RowDefinition Height="1.25*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="4*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+
+
+
+                </Grid>
+
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="Event Description" Style="{StaticResource LabelNotIn}" FontSize="14" Height="30" Margin="60,0"/>
+                    <TextBox Name="txtDescription" Grid.Row="1" Grid.Column="0" Margin="10,0,10,10"/>
+                    <Label Grid.Row="0" Grid.Column="1" Content="Recent Events" Style="{StaticResource LabelNotIn}" FontSize="14" Height="30" Margin="72,0"/>
+                    <ListBox Name="EventListBox" ItemsSource="{Binding Items}" SelectionChanged="EventListBox_SelectionChanged" Grid.Row="1" Grid.Column="1" Margin="10,0,10,10">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=Summary}" />
+                                    <TextBlock Text=" : " />
+                                    <TextBlock Text="{Binding Path=Start.Date}" />
+                                    <TextBlock Text="{Binding Path=Start.DateTime}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="Event Title" Style="{StaticResource LabelNotIn}" HorizontalAlignment="Left" FontSize="14"/>
+                    <TextBox Name="txtSummary" Grid.Column="1" Margin="10"/>
+                    <Label Grid.Column="2" Content="Location" HorizontalAlignment="Center" FontSize="14" Style="{StaticResource LabelNotIn}"/>
+                    <TextBox Name="txtLocation" Grid.Column="3" Margin="10"/>
+
+                </Grid>
+
+
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBox Grid.Row="0" Margin="10,10,10,0"/>
+                        <Label Grid.Row="1" Content="Year" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox Grid.Row="0" Margin="10,10,10,0"/>
+                        <Label Grid.Row="1" Content="Month" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                    </Grid>
+
+                    <Grid Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox Grid.Row="0" Margin="10,10,10,0"/>
+                        <Label Grid.Row="1" Content="Day" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                    </Grid>
+
+                    <Grid Grid.Column="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox Grid.Row="0" Margin="10,10,10,0"/>
+                        <Label Grid.Row="1" Content="Hour (0-23)" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                    </Grid>
+
+                    <Grid Grid.Column="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox Grid.Row="0" Margin="10,10,10,0"/>
+                        <Label Grid.Row="1" Content="Minutes" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                    </Grid>
+
+
+                </Grid>
+
+
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBox Name="txtStartYear" Grid.Row="0" Margin="10,10,10,0"/>
+                        <Label Grid.Row="1" Content="Year" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox Name="txtStartMonth" Grid.Row="0" Margin="10,10,10,0"/>
+                        <Label Grid.Row="1" Content="Month" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                    </Grid>
+
+                    <Grid Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox Name="txtStartDay" Grid.Row="0" Margin="10,10,10,0"/>
+                        <Label Grid.Row="1" Content="Day" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                    </Grid>
+
+                    <Grid Grid.Column="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox Name="txtStartHour" Grid.Row="0" Margin="10,10,10,0"/>
+                        <Label Grid.Row="1" Content="Hour (0-23)" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                    </Grid>
+
+                    <Grid Grid.Column="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox Name="txtStartMinute" Grid.Row="0" Margin="10,10,10,0"/>
+                        <Label Grid.Row="1" Content="Minutes" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                    </Grid>
+
+                    <Label Grid.Column="0" Content="Start Time *" HorizontalAlignment="Left" Style="{StaticResource LabelNotIn}" FontSize="13"/>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBox Name="txtEndYear" Grid.Row="0" Margin="10,10,10,0"/>
+                            <Label Grid.Row="1" Content="Year" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                        </Grid>
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBox Name="txtEndMonth" Grid.Row="0" Margin="10,10,10,0"/>
+                            <Label Grid.Row="1" Content="Month" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                        </Grid>
+
+                        <Grid Grid.Column="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBox Name="txtEndDay" Grid.Row="0" Margin="10,10,10,0"/>
+                            <Label Grid.Row="1" Content="Day" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                        </Grid>
+
+                        <Grid Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBox Name="txtEndHour" Grid.Row="0" Margin="10,10,10,0"/>
+                            <Label Grid.Row="1" Content="Hour (0-23)" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                        </Grid>
+
+                        <Grid Grid.Column="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBox Name="txtEndMinute" Grid.Row="0" Margin="10,10,10,0"/>
+                            <Label Grid.Row="1" Content="Minutes" Style="{StaticResource LabelNotIn}" FontSize="12"/>
+                        </Grid>
+
+                        <Label Grid.Column="0" Content="End Time *" HorizontalAlignment="Left" Style="{StaticResource LabelNotIn}" FontSize="13"/>
+                    </Grid>
+
+
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Page>
