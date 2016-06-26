@@ -27,11 +27,65 @@ namespace WCCFNew
         string[] groupID;
         string[] pageID;
 
+        SEMDBDataContext db = new SEMDBDataContext();
+
         public SettingsPG()
         {
             InitializeComponent();
         }
 
+        #region New Client submission
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string firstName = FirstNameTxtBox.Text;
+            string lastName = LastNameTxtBox.Text;
+            string address = AddressTxtBox.Text;
+            string city = CityTxtBox.Text;
+            string state = StateTxtBox.Text;
+            string zip = ZipTxtBox.Text;
+            string email = EmailTxtBox.Text;
+            string twitterHandle = TwitterHandleTxtBox.Text;
+            string facebookEmail = FacebookEmailTxtBox.Text;
+            User u = new User();
+            u.FirstName = firstName;
+            u.LastName = lastName;
+
+            u.address.StreetAddress = address;
+            u.address.city = city;
+            u.address.state = state;
+            u.address.zip = Convert.ToInt32(zip);
+            if (email != null || facebookEmail != null || twitterHandle != null)
+            {
+
+                if (email != null)
+                {
+                    u.Email.EmailAddress = email;
+                }
+
+                if (facebookEmail != null)
+                {
+                    SocialMedia s = new SocialMedia();
+                    s.User = u;
+                    s.User_UserID = s.User.UserID;
+                    s.SMtyKey = 2;
+                    u.SocialMedias.Add(s);
+                }
+                if (twitterHandle != null)
+                {
+                    SocialMedia s = new SocialMedia();
+                    s.User = u;
+                    s.User_UserID = s.User.UserID;
+                    s.SMtyKey = 1;
+                    u.SocialMedias.Add(s);
+                }
+
+            }
+
+            db.Users.InsertOnSubmit(u);
+        } 
+        #endregion
+
+        #region Facebook Group
         // Sets the given url as the posting group (by parsing for group ID)
         private void btnApply_Click(object sender, RoutedEventArgs e)
         {
@@ -90,6 +144,7 @@ namespace WCCFNew
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             txtFBGroupUrl.Clear();
-        }
+        } 
+        #endregion
     }
 }

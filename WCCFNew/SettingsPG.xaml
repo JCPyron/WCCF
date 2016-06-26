@@ -17,15 +17,100 @@
         </Grid.ColumnDefinitions>
         <Border Grid.Row="0" Style="{StaticResource headerBoarderStyle}"/>
         <Label Grid.Row="0" Content="Settings" Foreground="#c1c1c1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="28" Margin="169,0,173,3"/>
-        <Label x:Name="lblFBGroupUrl" Content="Facebook Group URL:" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="169,10,166,0" Grid.Row="1"/>
-        <TextBox x:Name="txtFBGroupUrl" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="286" Margin="90,41,83,0" Grid.Row="1"/>
-        <Button x:Name="btnApply" Content="Apply" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Margin="301,69,83,0" Grid.Row="1" Height="24" Click="btnApply_Click"/>
-        <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Margin="221,69,163,0" Grid.Row="1" Height="24" Click="btnClear_Click"/>
-        <Label x:Name="lblNotification" Content="*Must be a Public Group*" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="160,98,154,0" Grid.Row="1"/>
-        <Label x:Name="lblFBPageUrl" Content="Facebook Page Url:" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="169,153,179,0" Grid.Row="1"/>
-        <TextBox x:Name="txtFBPageUrl" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="286" Margin="90,179,83,0" Grid.Row="1"/>
-        <Button x:Name="btnPageApply" Content="Apply" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Margin="301,207,83,0" Grid.Row="1" Height="24" Click="btnPageApply_Click"/>
-        <Button x:Name="btnPageClear" Content="Clear" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Margin="221,207,163,0" Grid.Row="1" Height="24" Click="btnPageClear_Click"/>
-        <Rectangle Name="Splitter" Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="7" Margin="10,137,10,0" Grid.Row="1" Stroke="Black" VerticalAlignment="Top" Width="439"/>
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="328" Margin="0,4.8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="459">
+            <TabItem Header="Facebook Settings">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel HorizontalAlignment="Left" Height="280" Margin="10,10,0,0" VerticalAlignment="Top" Width="434" Orientation="Vertical">
+                        <Expander Header="Add Facebook Group" IsExpanded="False">
+                            <StackPanel Height="Auto">
+                                <Label x:Name="lblFBGroupUrl" Content="Facebook Group URL:" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                                <TextBox x:Name="txtFBGroupUrl" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="286" />
+                                <Button x:Name="btnApply" Content="Apply" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Height="24" Click="btnApply_Click"/>
+                                <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Height="24" Click="btnClear_Click"/>
+                                <Label x:Name="lblNotification" Content="*Must be a Public Group*" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                                <Label x:Name="lblFBPageUrl" Content="Facebook Page Url:" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                                <TextBox x:Name="txtFBPageUrl" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="286" />
+                                <Button x:Name="btnPageApply" Content="Apply" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Height="24" Click="btnPageApply_Click"/>
+                                <Button x:Name="btnPageClear" Content="Clear" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Height="24" Click="btnPageClear_Click"/>
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header=""></Expander>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Twitter Settings">
+                <StackPanel Background="#FFE5E5E5" >
+                    <Expander Header="Add Twitter Account" Height="Auto">
+                        <StackPanel>
+                            <Label Margin="10,0">Access Token:</Label>
+                            <TextBox Name="AccessTokenTxtBox" Margin="10,10"></TextBox>
+                            <Label Margin="10,0,0,0">Secret:</Label>
+                            <TextBox Name="SecretTxtBox" Margin="10,10"></TextBox>
+                            <Button HorizontalAlignment="Left" Margin="10,0,0,0" Padding="10,5,10,5">Add</Button>
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Email Settings">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Google Calendar Settings">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="General Settings">
+                <StackPanel Background="#FFE5E5E5">
+                    <Expander Header="Documentation and Instructions">
+                        <StackPanel>
+                            <Label>
+                                <Hyperlink>Adding a Twitter account</Hyperlink>
+                            </Label>
+                            <Label>
+                                <Hyperlink>Adding a Facebook account</Hyperlink>
+                            </Label>
+                            <Label>
+                                <Hyperlink>Help and Support</Hyperlink>
+                            </Label>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="Add a client">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="10,0,0,0">First Name:</Label>
+                            <TextBox Name="FirstNameTxtBox" Grid.Column="1"  ></TextBox>
+                            <Label Grid.Row="1" Margin="10,0,0,0">Last Name:</Label>
+                            <TextBox Name="LastNameTxtBox" Grid.Row="1" Grid.Column="1" ></TextBox>
+                            <Label Grid.Row="2" Margin="10,0,0,0">Address:</Label>
+                            <TextBox Name="AddressTxtBox" Grid.Row="2" Grid.Column="1"/>
+                            <Label Grid.Row="3" Margin="10,0,0,0">City:</Label>
+                            <TextBox Name="CityTxtBox" Grid.Row="3" Grid.Column="1"/>
+                            <Label Grid.Row="4" Margin="10,0,0,0">State:</Label>
+                            <TextBox Name="StateTxtBox" Grid.Row="4" Grid.Column="1"/>
+                            <Label Grid.Row="5" Margin="10,0,0,0">Zip:</Label>
+                            <TextBox Name="ZipTxtBox" Grid.Row="5" Grid.Column="1"/>
+                            <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="2">Email:</Label>
+                            <TextBox Name="EmailTxtBox" Grid.Column="3" />
+                            <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="2">Twitter Handle:</Label>
+                            <TextBox Name="TwitterHandleTxtBox" Grid.Row="1" Grid.Column="3" />
+                            <Label Grid.Row="2" Grid.Column="2" Margin="10,0,0,0">Facebook Email:</Label>
+                            <TextBox Name="FacebookEmailTxtBox" Grid.Row="2" Grid.Column="3"/>
+                            <Button Grid.Row="4" Grid.Column="3" Background="Gray" Foreground="White" Click="Button_Click">Submit</Button>
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Page>
