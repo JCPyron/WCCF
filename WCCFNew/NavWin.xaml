@@ -5,6 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WCCFNew"
         mc:Ignorable="d"
-        Title="Media Message Manager" Height="500" Width="500" WindowStartupLocation="CenterScreen" Icon="Media/Icon.png" Source="LoginPG.xaml">
+        Title="Media Message Manager" Height="500" Width="500" WindowStartupLocation="CenterScreen" Icon="Media/Icon.png" Source="MainMenuPG.xaml">
 
 </NavigationWindow>

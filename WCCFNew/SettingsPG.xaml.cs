@@ -35,10 +35,8 @@ namespace WCCFNew
         }
 
         #region New Client submission
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnClient_Click(object sender, RoutedEventArgs e)
         {
-            string firstName = FirstNameTxtBox.Text;
-            string lastName = LastNameTxtBox.Text;
             string address = AddressTxtBox.Text;
             string city = CityTxtBox.Text;
             string state = StateTxtBox.Text;
@@ -46,43 +44,47 @@ namespace WCCFNew
             string email = EmailTxtBox.Text;
             string twitterHandle = TwitterHandleTxtBox.Text;
             string facebookEmail = FacebookEmailTxtBox.Text;
-            User u = new User();
-            u.FirstName = firstName;
-            u.LastName = lastName;
-
-            u.address.StreetAddress = address;
-            u.address.city = city;
-            u.address.state = state;
-            u.address.zip = Convert.ToInt32(zip);
-            if (email != null || facebookEmail != null || twitterHandle != null)
+            User newC = new User
             {
+                FirstName = FirstNameTxtBox.Text,
+                LastName = LastNameTxtBox.Text,
+            };
+            db.Users.InsertOnSubmit(newC);
+            if (email != null)
+            { db.Emails.InsertOnSubmit(new Email { EmailAddress = email, User = newC }); }
+            if (facebookEmail != null)
+            { db.SocialMedias.InsertOnSubmit(new SocialMedia { User = newC, SMHandle = facebookEmail, SMtyKey = 2 }); }
+            if (twitterHandle != null)
+            { db.SocialMedias.InsertOnSubmit(new SocialMedia { User = newC, SMHandle = twitterHandle, SMtyKey = 1 }); }
+            db.SubmitChanges();
+            db.ExecuteCommand("COMMIT");
 
-                if (email != null)
-                {
-                    u.Email.EmailAddress = email;
-                }
+        }
 
-                if (facebookEmail != null)
-                {
-                    SocialMedia s = new SocialMedia();
-                    s.User = u;
-                    s.User_UserID = s.User.UserID;
-                    s.SMtyKey = 2;
-                    u.SocialMedias.Add(s);
-                }
-                if (twitterHandle != null)
-                {
-                    SocialMedia s = new SocialMedia();
-                    s.User = u;
-                    s.User_UserID = s.User.UserID;
-                    s.SMtyKey = 1;
-                    u.SocialMedias.Add(s);
-                }
+        #endregion
+        #region Twitter
+        Twit newTwitter;
+        private void btnTwitterAdd_Click(object sender, RoutedEventArgs e)
+        {
+            VerSuc.Visibility = Visibility.Hidden;
+            newTwitter = new Twit();
+        }
 
-            }
-
-            db.Users.InsertOnSubmit(u);
-        } 
+        private void btnTwitterVerify_Click(object sender, RoutedEventArgs e)
+        {
+            string v = Verify.Text;
+            if(v!=null||v!="") { newTwitter.authorize(v); } 
+            db.Twitters.InsertOnSubmit(new Twitter
+            {
+                AToken = newTwitter.getAuthTokenAsString(),
+                ASecret = newTwitter.getAuthSecretAsString(),
+                UserId = newTwitter.getUserID(),
+                ScreenName = newTwitter.getUserHandle()
+            });
+            db.SubmitChanges();
+            Verify.Text = "";
+            VerSuc.Visibility = Visibility.Visible;
+        }
         #endregion
 
         #region Facebook Group

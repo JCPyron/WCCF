@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic; 
 using System.Windows;
 using System.Windows.Controls;
 using System.Net;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Data.Linq;
 using System.Net.Mail;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Win32;
-using System.IO;
-using Facebook;
+using Microsoft.Win32; 
 
 namespace WCCFNew
 {
@@ -30,73 +21,81 @@ namespace WCCFNew
         // Twitter - Needs to be added in.
 
         // Facebook Variables -------------------------------------------------------------------------------
-        LoginPG loginScreen;
-        FacebookLogic fbClass;
+        List<FacebookLogic> fbClass = new List<FacebookLogic>();
         private bool photoSelected;
         private string photoPath;
         //----------------------------------------------------------------------------------------------------
 
         // Email Variables
-        string User;
-        string Pass;
+        List<GmailClass> gMail = new List<GmailClass>();
         string Sub;
         string Bod;
         //-----------------
 
         //twitter variable
-        List<Twit> twitter;
+        List<Twit> twitter = new List<Twit>();
 
         private const int MAX_CHARS = 140;
         private const int MAX_PIC_CHARS = 117;
-        string dbConnectionString;
-        private SEMDBDataContext db = new SEMDBDataContext(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\WCCF Database Test\WCCFNew (MASTER)\WCCFNew\WCCFNew\SMBDB.mdf; Integrated Security = True");
+        private static string dbConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename='C:\WCCF Database Test\WCCFNew(MASTER)\WCCF\WCCFNew\SMBDB.mdf';Integrated Security=True";
+        private SEMDBDataContext db;
 
         public QuickPost()
         {
             InitializeComponent();
             fillCombo();
-            var tToken = db.ExecuteQuery<string>("SELECT AToken FROM dbo.Twitter");
-            var tSecret = db.ExecuteQuery<string>("SELECT ASecret FROM dbo.Twitter");
-            var tSN = db.ExecuteQuery<string>("SELECT ScreenName FROM dbo.Twitter");
-            var tUID = db.ExecuteQuery<Int64>("SELECT UserId From dbo.Twitter");
+            db =new SEMDBDataContext(dbConnectionString);
+            //TWITTER: retrieving the db info, setting up the twit classes, and putting them in a list
+            Table<Twitter> t = db.GetTable<Twitter>(); 
+            foreach (Twitter item in t)
+            { twitter.Add(new Twit(item.AToken, item.ASecret, item.UserId, item.ScreenName)); }
 
-            for (int i = 0; i < tToken.Count(); i++)
-            {
-                twitter.Add(new Twit(tToken.ElementAt(i), tSecret.ElementAt(i), tUID.ElementAt(i), tSN.ElementAt(i)));
-            }
+            //FACEBOOK: retrieves the db info and adds it to a list
+            Table<Face> face = db.GetTable<Face>();
+            foreach (Face fb in face)
+            { fbClass.Add(new FacebookLogic(fb.AToken)); } 
+
+            //EMAIL: retrieves the db info
+            var eUser = db.ExecuteQuery<string>("SELECT UserName FROM dbo.UMail");
+            var ePass = db.ExecuteQuery<string>("SELECT Password FROM dbo.UMail");
+            Table<UMail> m = db.GetTable<UMail>();
+            foreach (UMail temp in m)
+            { gMail.Add(new GmailClass(temp.UserName, temp.Password)); }
         }
 
         private void fillCombo()
         {
 
-            //Table<SMAccountInfo> accounts = new Table<SMAccountInfo>();
-            var fbQuery = db.ExecuteQuery<object>("SELECT * FROM dbo.Face");            
+            //Table<SMAccountInfo> accounts = new Table<SMAccountInfo>();         
             
-
-            foreach (var item in fbQuery)
+            //facebook check boxes
+            foreach (var item in fbClass)
             {
                 MenuItem temp = new MenuItem();
                 temp.IsCheckable = true;
                 temp.StaysOpenOnClick = true;
-                temp.Header = item.AccountName;
+                temp.Header = item.getUserName();
                 FacebookAccounts.Items.Add(temp);
             }
-            fbQuery = from stuff in db.SMAccountInfos where stuff.SMType == 1 select stuff;
-            foreach (var item in fbQuery)
+            
+            //twitter checkboxes
+            foreach (var item in twitter)
             {
                 MenuItem temp = new MenuItem();
                 temp.IsCheckable = true;
                 temp.StaysOpenOnClick = true;
-                temp.Header = item.AccountName;
+                temp.Header = item.getUserName();
                 TwitterAccounts.Items.Add(temp);
             }
-            fbQuery = from stuff in db.SMAccountInfos where stuff.SMType == 3 select stuff;
-            foreach (var item in fbQuery)
+            
+
+            //email checkboxes
+            foreach (var item in gMail)
             {
                 MenuItem temp = new MenuItem();
                 temp.IsCheckable = true;
                 temp.StaysOpenOnClick = true;
-                temp.Header = item.AccountName;
+                temp.Header = item.User;
                 EMailAccounts.Items.Add(temp);
             }
         }
@@ -104,7 +103,7 @@ namespace WCCFNew
         private void MainMenuBTN_Click(object sender, RoutedEventArgs e)
         {
             MainMenuPG mm = new MainMenuPG();
-            this.NavigationService.Navigate(mm);
+            NavigationService.Navigate(mm);
         }
 
         private void ClearMSGBTN_Click(object sender, RoutedEventArgs e)
@@ -122,71 +121,72 @@ namespace WCCFNew
             //string postSuc = "";
             // Facebook Posting Logic --------------------------------------------------------------------------------------------------------------
             if (lblPhotoSelected.Visibility == Visibility.Visible)
-            {
-                photoSelected = true;
-            }
+            { photoSelected = true; }
             else
-            {
-                photoSelected = false;
-            }
+            { photoSelected = false; }
 
-            loginScreen = new LoginPG();
-            fbClass = new FacebookLogic();
-            bool postSuccess = fbClass.postClick(EventText.Text, photoSelected, photoPath);
+            bool postSuccess = true;
+            foreach (FacebookLogic item in fbClass)
+            { postSuccess = item.postClick(message, photoSelected, photoPath);  }
             // --------------------------------------------------------------------------------------------------------------------------------------
 
 
             //twitter posting logic------------------------------
-            bool tSuc;
-            if (photoPath == null || photoPath.Length<=0)//no picture
-            { tSuc = twitter.post(twitterMessage); }
-            else//1 picture
-            { tSuc = twitter.post(twitterMessage,photoPath); }
+            bool tSuc = true;
+            foreach (Twit item in twitter)
+            {
+                if (photoPath == null || photoPath.Length <= 0)//no picture
+                { tSuc = item.post(twitterMessage); }
+                else//1 picture
+                { tSuc = item.post(twitterMessage, photoPath); }
+            }
+            
             //--------------------------------------------
 
             // Email Posting Logic
-            var eU = db.ExecuteQuery<string>("SELECT UserName FROM dbo.UMail");
-            var eP = db.ExecuteQuery<string>("SELECT Password FROM dbo.UMail");
             Sub = "West Chest Community Foundation E-Blast";
-            Bod = EventText.Text;
-            for (int i = 0; i < eU.Count(); i++)
-            {
+            foreach (var item in gMail)
+            { 
                 var client = new SmtpClient("smtp.gmail.com", 587);
                 client.EnableSsl = true;
                 client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(eU.ElementAt(i), eU.ElementAt(i));
+                client.Credentials = new NetworkCredential(item.User, item.Password);
                 try
                 {
                     // Create instance of message
                     MailMessage emailMessage = new MailMessage(); 
                     var emailSendingQuery = db.ExecuteQuery<string>("SELECT EmailAddress FROM dbo.Email");
-                    foreach (var item in emailSendingQuery)
-                    { emailMessage.Bcc.Add(item); }
+                    foreach (var temp in emailSendingQuery)
+                    { emailMessage.Bcc.Add(temp); }
                      
                     //Word docs end with .Docx    Excel with .xlsx   Pdf with .pdf   Powerpoint with .pptx   images with appropiate file typ, .jpg, .png, etc.
                     //message.Attachments.Add(new Attachment(@"M:\EmailTester.Docx"));
 
                     // Set sender
-                    emailMessage.From = new MailAddress(eU.ElementAt(i));
+                    emailMessage.From = new MailAddress(item.User);
                     // Set subject
                     emailMessage.Subject = Sub;
                     //// Set body of message
-                    emailMessage.Body = Bod;
+                    emailMessage.Body = message;
                     // Send the message
                     client.Send(emailMessage);
-                    // Clean up
-                    message = null;
-                    Bod = null;
                 }
                 catch (Exception)
                 { }
             }
-                        
+
 
 
             //Displays results-----------------------------------------------------------
-            MessageBox.Show(string.Format("Success:\nTwitter: {0}\nFacebook: {1}",tSuc,postSuccess), "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            
+            if (tSuc && postSuccess) { MessageBox.Show("Both Twitter and Facebook posted successfully",
+                "Success", MessageBoxButton.OK, MessageBoxImage.Information);}
+            else if (tSuc) { MessageBox.Show("Something went wrong with Facebook, but Twitter Succeeded.",
+                "Partial Success",MessageBoxButton.OK,MessageBoxImage.Exclamation);}
+            else if (postSuccess) { MessageBox.Show("Something went wrong with Twitter, but Facebook Succeeded.",
+                "Partial Success", MessageBoxButton.OK, MessageBoxImage.Exclamation); }
+            else MessageBox.Show("neither Facbook nor Twitter worked", 
+                "Critical Failure", MessageBoxButton.OK,MessageBoxImage.Error);
+
         }
 
         private void TwitterText_TextChanged(object sender, TextChangedEventArgs e)
@@ -257,6 +257,12 @@ namespace WCCFNew
             {
                 lblPhotoSelected.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsPG sp = new SettingsPG();
+            NavigationService.Navigate(sp);
         }
     }
 }

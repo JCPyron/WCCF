@@ -28,7 +28,11 @@
         <Button x:Name="GoogleCalenderBTN" Grid.Column="1" Grid.Row="3"  Style="{StaticResource MainMenuButtons }" Content="Google Calender" Click="GoogleCalenderBTN_Click"/>
         <Button x:Name="QuickPostBTN" Grid.Row="4" Grid.ColumnSpan="2"  Style="{StaticResource MainMenuButtons }" Content="Quick Post"  Click="QuickPost_Click"/>
             
-        <Border Grid.ColumnSpan="2" Style="{StaticResource headerBoarderStyle}"/>
+        <Border Grid.ColumnSpan="2" Style="{StaticResource headerBoarderStyle}">
+            <Button Style="{StaticResource buttonStyle}" Name="btnSettings" Width="50" HorizontalAlignment="Left" Margin="5" Click="btnSettings_Click">
+                <Image Source="Media/settings.png"/>
+            </Button>
+        </Border>
         <Border Grid.Row="5" Grid.ColumnSpan="2"  Style="{StaticResource footerBoarderStyle}"/>
         <Label x:Name="MainMenuLBL" Grid.Row="0" Grid.ColumnSpan="2" Content="Main Menu" FontSize="33.333" Style="{StaticResource LabelInHead}" />
         

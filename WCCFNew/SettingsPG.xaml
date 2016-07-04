@@ -42,11 +42,12 @@
                 <StackPanel Background="#FFE5E5E5" >
                     <Expander Header="Add Twitter Account" Height="Auto">
                         <StackPanel>
-                            <Label Margin="10,0">Access Token:</Label>
-                            <TextBox Name="AccessTokenTxtBox" Margin="10,10"></TextBox>
-                            <Label Margin="10,0,0,0">Secret:</Label>
-                            <TextBox Name="SecretTxtBox" Margin="10,10"></TextBox>
-                            <Button HorizontalAlignment="Left" Margin="10,0,0,0" Padding="10,5,10,5">Add</Button>
+                            <Label Margin="10,0">When The "Begin" button is clicked, you will be redirected to a webpage.</Label>
+                            <Label Margin="10,0">Login into the new account and input the verification code below.</Label>
+                            <Button Name="btnTwitterAdd" Click="btnTwitterAdd_Click" HorizontalAlignment="Left" Margin="10,0,0,0" Padding="10,5,10,5">Begin</Button>
+                            <TextBox Name="Verify" Margin="10,10"></TextBox>
+                            <Button Name="btnTwitterVerify" Click="btnTwitterVerify_Click" HorizontalAlignment="Left" Margin="10,0,0,0" Padding="10,5,10,5">Verify</Button>
+                            <Label Name="VerSuc" Visibility="Hidden">Verification Successful!</Label>
                         </StackPanel>
                     </Expander>
                 </StackPanel>
@@ -83,30 +84,31 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="13.92"/>
+                                <ColumnDefinition Width="66.08"/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Label Margin="10,0,0,0">First Name:</Label>
-                            <TextBox Name="FirstNameTxtBox" Grid.Column="1"  ></TextBox>
-                            <Label Grid.Row="1" Margin="10,0,0,0">Last Name:</Label>
-                            <TextBox Name="LastNameTxtBox" Grid.Row="1" Grid.Column="1" ></TextBox>
-                            <Label Grid.Row="2" Margin="10,0,0,0">Address:</Label>
-                            <TextBox Name="AddressTxtBox" Grid.Row="2" Grid.Column="1"/>
-                            <Label Grid.Row="3" Margin="10,0,0,0">City:</Label>
-                            <TextBox Name="CityTxtBox" Grid.Row="3" Grid.Column="1"/>
-                            <Label Grid.Row="4" Margin="10,0,0,0">State:</Label>
-                            <TextBox Name="StateTxtBox" Grid.Row="4" Grid.Column="1"/>
-                            <Label Grid.Row="5" Margin="10,0,0,0">Zip:</Label>
-                            <TextBox Name="ZipTxtBox" Grid.Row="5" Grid.Column="1"/>
-                            <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="2">Email:</Label>
-                            <TextBox Name="EmailTxtBox" Grid.Column="3" />
-                            <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="2">Twitter Handle:</Label>
-                            <TextBox Name="TwitterHandleTxtBox" Grid.Row="1" Grid.Column="3" />
-                            <Label Grid.Row="2" Grid.Column="2" Margin="10,0,0,0">Facebook Email:</Label>
-                            <TextBox Name="FacebookEmailTxtBox" Grid.Row="2" Grid.Column="3"/>
-                            <Button Grid.Row="4" Grid.Column="3" Background="Gray" Foreground="White" Click="Button_Click">Submit</Button>
+                            <Label Margin="10,0,0,25.2" Grid.ColumnSpan="2" Grid.RowSpan="2">First Name:</Label>
+                            <TextBox Name="FirstNameTxtBox" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,0,103.6,25.2" Grid.RowSpan="2"  ></TextBox>
+                            <Label Grid.Row="1" Margin="10,0.4,0,0.2" Grid.ColumnSpan="2">Last Name:</Label>
+                            <TextBox Name="LastNameTxtBox" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,0.4,103.6,24.8" Grid.RowSpan="2" ></TextBox>
+                            <Label Grid.Row="1" Margin="10,25.4,0,25.4" Grid.ColumnSpan="2" Grid.RowSpan="3">Address:</Label>
+                            <TextBox Name="AddressTxtBox" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,25.4,103.6,25.4" Grid.RowSpan="3"/>
+                            <Label Grid.Row="3" Margin="10,0.2,0,0.4" Grid.ColumnSpan="2">City:</Label>
+                            <TextBox Name="CityTxtBox" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,0.2,103.6,25" Grid.RowSpan="2"/>
+                            <Label Grid.Row="3" Margin="10,25.2,0,0" Grid.ColumnSpan="2" Grid.RowSpan="2">State:</Label>
+                            <TextBox Name="StateTxtBox" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,25.2,103.6,0" Grid.RowSpan="2"/>
+                            <Label Grid.Row="5" Margin="10,0,0,-0.4" Grid.ColumnSpan="2">Zip:</Label>
+                            <TextBox Name="ZipTxtBox" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,0,103.6,-0.4"/>
+                            <Label Margin="10.4,0,133.2,25.2" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="2">Email:</Label>
+                            <TextBox Name="EmailTxtBox" Grid.Column="4" Margin="0.4,0,-0.8,25.2" Grid.RowSpan="2" />
+                            <Label Margin="10.4,0.4,133.2,0.2" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">Twitter Handle:</Label>
+                            <TextBox Name="TwitterHandleTxtBox" Grid.Row="1" Grid.Column="4" Margin="0.4,0.4,-0.8,24.8" Grid.RowSpan="2" />
+                            <Label Grid.Row="1" Grid.Column="3" Margin="10.4,25.4,133.2,25.4" Grid.ColumnSpan="2" Grid.RowSpan="3">Facebook Email:</Label>
+                            <TextBox Name="FacebookEmailTxtBox" Grid.Row="1" Grid.Column="4" Margin="0.4,25.4,-0.8,25.4" Grid.RowSpan="3"/>
+                            <Button Name="btnClient"  Grid.Row="3" Grid.Column="4" Background="Gray" Foreground="White" Click="btnClient_Click" Margin="0.4,25.2,0.2,0" Grid.RowSpan="2">Submit</Button>
                         </Grid>
                     </Expander>
                 </StackPanel>

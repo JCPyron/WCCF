@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
+using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -36,7 +37,7 @@ namespace WCCFNew
         private EventsResource.ListRequest request;
         private Event selEvent;
         private IList<EventAttendee> atList = new List<EventAttendee>();
-
+        
         public GoogleCalenderPG()
         {
             InitializeComponent();
@@ -48,8 +49,7 @@ namespace WCCFNew
             using (var stream =
                 new FileStream("client_secrets_gc.json", FileMode.Open, FileAccess.Read))
             {
-                string credPath = System.Environment.GetFolderPath(
-                    System.Environment.SpecialFolder.Personal);
+                string credPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 credPath = System.IO.Path.Combine(credPath, ".credentials/calendar-dotnet-quickstart");
 
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -88,16 +88,11 @@ namespace WCCFNew
 
         private void grabDBInfo()
         {
-            var db = new SEMDBDataContext(
-                @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Harshil\Desktop\WCCF Merging Folder\WCCFNew (MASTER)\WCCFNew\WCCFNew\SMBDB.mdf;Integrated Security=True");
+            var db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\WCCF Database Test\WCCFNew(MASTER)\WCCF\WCCFNew\SMBDB.mdf;Integrated Security=True");
             // Change this for final DB.
-
-
-            Table<Email> emailData = db.GetTable<Email>();
-
-            var emailQuery = db.ExecuteQuery<string>("SELECT EmailAdress FROM Email");
+            Table<Email> clients = db.GetTable<Email>();
             
-            foreach (string address in emailQuery)
+            foreach (Email address in clients)
             {
                 EventAttendee attendee = new EventAttendee();
                 attendee.Email = address.EmailAddress;
@@ -299,7 +294,7 @@ namespace WCCFNew
 
         private void addAttendees(Event currentEvent)
         {
-            //currentEvent.Attendees = atList;
+            currentEvent.Attendees = atList;
         }
     }
 }

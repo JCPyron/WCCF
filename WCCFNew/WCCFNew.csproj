@@ -14,6 +14,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -50,6 +50,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>WCCFNew.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
@@ -133,6 +137,7 @@
     <Compile Include="FacebookLoginDialog.xaml.cs">
       <DependentUpon>FacebookLoginDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GmailClass.cs" />
     <Compile Include="GMailPG.xaml.cs">
       <DependentUpon>GMailPG.xaml</DependentUpon>
     </Compile>
@@ -175,10 +180,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginPG.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainMenuPG.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -193,9 +194,6 @@
     </Compile>
     <Compile Include="FacebookPG.xaml.cs">
       <DependentUpon>FacebookPG.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="LoginPG.xaml.cs">
-      <DependentUpon>LoginPG.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainMenuPG.xaml.cs">
       <DependentUpon>MainMenuPG.xaml</DependentUpon>
@@ -277,6 +275,7 @@
   <ItemGroup>
     <Content Include="CreateTables.sql" />
     <Content Include="InsertTestInfo.sql" />
+    <Resource Include="Media\settings.png" />
     <Content Include="SMBDB.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

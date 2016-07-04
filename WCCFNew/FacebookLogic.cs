@@ -19,17 +19,28 @@ namespace WCCFNew
         private bool postSuccess; // True / False for successful post
         //private string postDirection; // Decides where to post the status to
         List<string> postDirectionList = new List<string>(); // List of post directions
-        AccessTokenCheck atCheck;
-        LoginPG loginScreen;
-        QuickPost quickPost;
+        FacebookClient fb;
+        /// <summary>
+        /// public constructor
+        /// </summary>
+        /// <param name="AToken"></param>
+        public FacebookLogic(string AToken)
+        {
+            _accessToken = AToken;
+            fb = new FacebookClient(_accessToken);
+        }
+        public dynamic getUserName()
+        { 
+            // Gets the users name through a query on the Graph API
+            dynamic result = fb.Get("/me");
+            return result.name;
+        }
 
         // Makes a status post
         private void StatusPost(string fbMessage, bool photoSelectedValue)
         {
             try
             {
-                var fb = new FacebookClient(_accessToken);
-                quickPost = new QuickPost();
                 dynamic result;
 
                 //if (cbGroup.IsChecked == true)
@@ -116,20 +127,9 @@ namespace WCCFNew
                     _accessToken = facebookOAuthResult.AccessToken;
                     var fb = new FacebookClient(facebookOAuthResult.AccessToken);
 
-                    // Gets the users name through a query on the Graph API
-                    dynamic result = fb.Get("/me");
-                    var name = result.name;
-
-                    // Welcomes the user after a successful login
-                    MessageBox.Show("Success. Hello " + name);
-                    //txtMessageFB.IsEnabled = true;
-                    //btnClearFB.IsEnabled = true;
-                    //btnSubmitFB.IsEnabled = true;
-                    //cbGroup.IsEnabled = true;
-                    //cbWall.IsEnabled = true;
-                    //cbPage.IsEnabled = true;
-                    atCheck = new AccessTokenCheck(_accessToken);
-                    _accessToken = atCheck.getExtendedToken;
+                    
+                    
+                    _accessToken = new AccessTokenCheck(_accessToken).getExtendedToken;
                     File.WriteAllText(@"AccessTokenStorage\accessToken.txt", _accessToken);
                 }
                 else
@@ -151,8 +151,6 @@ namespace WCCFNew
 
         public bool postClick(string message, bool photoSelectedValue, string extractedPhotoPath)
         {
-            loginScreen = new LoginPG();
-            _accessToken = loginScreen.getStoredToken;
             photoPath = extractedPhotoPath;
             StatusPost(message, photoSelectedValue);
             
@@ -162,11 +160,6 @@ namespace WCCFNew
 
         // For Facebook
         public string accessTokenProp
-        {
-            set
-            {
-                _accessToken = value;
-            }
-        }
+        { set { _accessToken = value; } }
     }
 }

@@ -66,9 +66,9 @@
                         <RowDefinition Height="6*"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Grid.Column="0" Content="Event Description" Style="{StaticResource LabelNotIn}" FontSize="14" Height="30" Margin="60,0"/>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Event Description" Style="{StaticResource LabelNotIn}" FontSize="14" Height="30" Margin="0"/>
                     <TextBox Name="txtDescription" Grid.Row="1" Grid.Column="0" Margin="10,0,10,10"/>
-                    <Label Grid.Row="0" Grid.Column="1" Content="Recent Events" Style="{StaticResource LabelNotIn}" FontSize="14" Height="30" Margin="72,0"/>
+                    <Label Grid.Row="0" Grid.Column="1" Content="Recent Events" Style="{StaticResource LabelNotIn}" FontSize="14" Height="30" Margin="0"/>
                     <ListBox Name="EventListBox" ItemsSource="{Binding Items}" SelectionChanged="EventListBox_SelectionChanged" Grid.Row="1" Grid.Column="1" Margin="10,0,10,10">
                         <ListBox.ItemTemplate>
                             <DataTemplate>

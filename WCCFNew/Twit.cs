@@ -177,7 +177,7 @@ namespace WCCFNew
         /// </summary>
         /// <returns>number of tweets favorited by the account</returns>
         public int getUserFavoritesCount()
-        { return getFavorites(authToken.ScreenName).Count<TwitterStatus>(); }
+        { return getFavorites(authToken.ScreenName).Count(); }
 
         /// <summary>
         /// returns the number of tweets favorited by the target
@@ -185,14 +185,14 @@ namespace WCCFNew
         /// <param name="targetName">handle of the target</param>
         /// <returns>number of tweets favorited by the target</returns>
         public int getUserFavoritesCount(string targetName)
-        { return getFavorites(targetName).Count<TwitterStatus>(); }
+        { return getFavorites(targetName).Count(); }
 
         /// <summary>
         /// returns the number of followers of the account linked to the CKey and Token
         /// </summary>
         /// <returns>number of followers</returns>
         public int getUserFollowerCount()
-        { return getFollowers(authToken.ScreenName).Count<TwitterUser>(); }
+        { return getFollowers(authToken.ScreenName).Count(); }
 
         /// <summary>
         /// returns the number of followers of the target
@@ -200,14 +200,14 @@ namespace WCCFNew
         /// <param name="targetName">handle of the target</param>
         /// <returns>the number of followers the target has</returns>
         public int getUserFollowerCount(string targetName)
-        { return getFollowers(targetName).Count<TwitterUser>(); }
+        { return getFollowers(targetName).Count(); }
 
         /// <summary>
         /// gets the number of tweets made by the user linked to the CKey and Token
         /// </summary>
         /// <returns>number of tweets</returns>
         public int getUserTweetCount()
-        { return getTweets(authToken.ScreenName).Count<TwitterStatus>(); }
+        { return getTweets(authToken.ScreenName).Count(); }
 
         /// <summary>
         /// gets the number of Tweets made by the target
@@ -215,7 +215,7 @@ namespace WCCFNew
         /// <param name="targetName">handle of the target</param>
         /// <returns>number of tweets by the target</returns>
         public int getUserTweetCount(string targetName)
-        { return getTweets(targetName).Count<TwitterStatus>(); }
+        { return getTweets(targetName).Count(); }
 
         /// <summary>
         /// sends a direct message to the target
@@ -330,7 +330,7 @@ namespace WCCFNew
         /// <param name="name">name to be searched</param>
         /// <returns>a TwitterUser class of the first user in search</returns>
         private TwitterUser searchUser(string name)
-        { return twitter.SearchForUser(new SearchForUserOptions() { Q = name }).ElementAt<TwitterUser>(0); }
+        { return twitter.SearchForUser(new SearchForUserOptions() { Q = name }).ElementAt(0); }
 
         /// <summary>
         /// returns the user in the list at the specified index
@@ -339,7 +339,7 @@ namespace WCCFNew
         /// <param name="index">index user is in the list</param>
         /// <returns>the user in the list at a specified index</returns>
         private TwitterUser searchUser(string name, int index)
-        { return twitter.SearchForUser(new SearchForUserOptions() { Q = name }).ElementAt<TwitterUser>(0); }
+        { return twitter.SearchForUser(new SearchForUserOptions() { Q = name }).ElementAt(0); }
 
     }
 }

@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Diagnostics;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -32,26 +33,24 @@ namespace WCCFNew
         }
 
         private void FacebookBTN_Click(object sender, RoutedEventArgs e)
-        {
-            FacebookPG fp = new FacebookPG();
-            this.NavigationService.Navigate(fp);
-        }
+        { Process.Start("https://www.Facebook.com/"); }
 
         private void TwitterBTN_Click(object sender, RoutedEventArgs e)
-        {
-            TwitterPG tp = new TwitterPG();
-            this.NavigationService.Navigate(tp);
-        }
+        { Process.Start("https://www.twitter.com/"); }
 
         private void EMailBTN_Click(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("http://www.Gmail.com/");
-        }
+        { Process.Start("http://www.Gmail.com/"); }
 
         private void GoogleCalenderBTN_Click(object sender, RoutedEventArgs e)
         {
             GoogleCalenderPG gc = new GoogleCalenderPG();
             this.NavigationService.Navigate(gc);
+        }
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsPG sp = new SettingsPG();
+            NavigationService.Navigate(sp);
         }
     }
 }
