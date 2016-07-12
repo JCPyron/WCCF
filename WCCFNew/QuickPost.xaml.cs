@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Net;
+using System.IO;
 using System.Windows.Media;
 using System.Data.Linq;
 using System.Net.Mail;
@@ -37,7 +38,7 @@ namespace WCCFNew
 
         private const int MAX_CHARS = 140;
         private const int MAX_PIC_CHARS = 117;
-        private static string dbConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename='C:\WCCF Database Test\WCCFNew(MASTER)\WCCF\WCCFNew\SMBDB.mdf';Integrated Security=True";
+        private static string dbConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\WCCF\WCCFNew\SMBDB.mdf;Integrated Security=True";
         private SEMDBDataContext db;
 
         public QuickPost()
@@ -46,21 +47,43 @@ namespace WCCFNew
             fillCombo();
             db =new SEMDBDataContext(dbConnectionString);
             //TWITTER: retrieving the db info, setting up the twit classes, and putting them in a list
-            Table<Twitter> t = db.GetTable<Twitter>(); 
-            foreach (Twitter item in t)
-            { twitter.Add(new Twit(item.AToken, item.ASecret, item.UserId, item.ScreenName)); }
+            try {
+                Table<Twitter> t = db.GetTable<Twitter>();
+                foreach (Twitter item in t)
+                { twitter.Add(new Twit(item.AToken, item.ASecret, item.UserId, item.ScreenName.Trim())); }
+            }
+            catch (Exception ex)
+            {
+                StreamWriter w = new StreamWriter("errorLog");
+                w.Write(ex.Message + "\n"+"Twitter" + DateTime.Now+"\n\n");
+                MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING TWITTER DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             //FACEBOOK: retrieves the db info and adds it to a list
-            Table<Face> face = db.GetTable<Face>();
-            foreach (Face fb in face)
-            { fbClass.Add(new FacebookLogic(fb.AToken)); } 
+            try {
+                Table<Face> face = db.GetTable<Face>();
+                foreach (Face fb in face)
+                { fbClass.Add(new FacebookLogic(fb.AToken)); }
+            }
+            catch (Exception ex)
+            {
+                StreamWriter w = new StreamWriter("errorLog");
+                w.Write(ex.Message + "\n" + "Facebook" + DateTime.Now + "\n\n");
+                MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING FACEBOOK DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             //EMAIL: retrieves the db info
-            var eUser = db.ExecuteQuery<string>("SELECT UserName FROM dbo.UMail");
-            var ePass = db.ExecuteQuery<string>("SELECT Password FROM dbo.UMail");
-            Table<UMail> m = db.GetTable<UMail>();
-            foreach (UMail temp in m)
-            { gMail.Add(new GmailClass(temp.UserName, temp.Password)); }
+            try {
+                Table<UMail> m = db.GetTable<UMail>();
+                foreach (UMail temp in m)
+                { gMail.Add(new GmailClass(temp.UserName, temp.Password)); }
+            }
+            catch (Exception ex)
+            {
+                StreamWriter w = new StreamWriter("errorLog");
+                w.Write(ex.Message + "\n" + "Email" + DateTime.Now + "\n\n");
+                MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING EMAIL DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void fillCombo()

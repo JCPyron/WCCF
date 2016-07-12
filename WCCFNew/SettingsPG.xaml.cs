@@ -27,7 +27,7 @@ namespace WCCFNew
         string[] groupID;
         string[] pageID;
 
-        SEMDBDataContext db = new SEMDBDataContext();
+        SEMDBDataContext db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\WCCF\WCCFNew\SMBDB.mdf;Integrated Security=True");
 
         public SettingsPG()
         {
@@ -56,8 +56,12 @@ namespace WCCFNew
             { db.SocialMedias.InsertOnSubmit(new SocialMedia { User = newC, SMHandle = facebookEmail, SMtyKey = 2 }); }
             if (twitterHandle != null)
             { db.SocialMedias.InsertOnSubmit(new SocialMedia { User = newC, SMHandle = twitterHandle, SMtyKey = 1 }); }
-            db.SubmitChanges();
-            db.ExecuteCommand("COMMIT");
+            try { db.SubmitChanges(); }
+            catch (Exception ex) {
+                StreamWriter w = new StreamWriter("errorLog");
+                w.Write(ex.Message + "\n" + DateTime.Now);
+                MessageBox.Show("AN ERROR HAS OCCURED WHEN SUBMITTING THE CLIENT","Database Error",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
 
         }
 
@@ -72,18 +76,21 @@ namespace WCCFNew
 
         private void btnTwitterVerify_Click(object sender, RoutedEventArgs e)
         {
-            string v = Verify.Text;
-            if(v!=null||v!="") { newTwitter.authorize(v); } 
-            db.Twitters.InsertOnSubmit(new Twitter
-            {
-                AToken = newTwitter.getAuthTokenAsString(),
-                ASecret = newTwitter.getAuthSecretAsString(),
-                UserId = newTwitter.getUserID(),
-                ScreenName = newTwitter.getUserHandle()
-            });
-            db.SubmitChanges();
+            try {
+                string v = Verify.Text;
+                if (v != null || v != "") { newTwitter.authorize(v); }
+                db.Twitters.InsertOnSubmit(new Twitter
+                {
+                    AToken = newTwitter.getAuthTokenAsString().Trim(),
+                    ASecret = newTwitter.getAuthSecretAsString(),
+                    UserId = newTwitter.getUserID(),
+                    ScreenName = newTwitter.getUserHandle()
+                });
+                db.SubmitChanges();
+                VerSuc.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex) { MessageBox.Show("The verification failed. Try again."); }
             Verify.Text = "";
-            VerSuc.Visibility = Visibility.Visible;
         }
         #endregion
 

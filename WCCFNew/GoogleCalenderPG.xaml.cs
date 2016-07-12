@@ -88,7 +88,7 @@ namespace WCCFNew
 
         private void grabDBInfo()
         {
-            var db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\WCCF Database Test\WCCFNew(MASTER)\WCCF\WCCFNew\SMBDB.mdf;Integrated Security=True");
+            var db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\WCCF\WCCFNew\SMBDB.mdf;Integrated Security=True");
             // Change this for final DB.
             Table<Email> clients = db.GetTable<Email>();
             
@@ -162,6 +162,7 @@ namespace WCCFNew
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
             Event newEvent = createEventBody();
+            addAttendees(newEvent);
 
             if (newEvent != null)
             {
@@ -241,6 +242,7 @@ namespace WCCFNew
                 {
                     EventsResource.DeleteRequest delReq = new EventsResource.DeleteRequest(myService, "primary", selEvent.Id);
                     string deletedTitle = selEvent.Summary;
+                    addAttendees(selEvent);
                     delReq.Execute();
 
                     if (deletedTitle == null)
@@ -268,6 +270,7 @@ namespace WCCFNew
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             Event newEvent = createEventBody();
+            addAttendees(newEvent);
 
             if (newEvent != null && selEvent != null)
             {

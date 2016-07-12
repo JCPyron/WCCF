@@ -276,11 +276,8 @@
     <Content Include="CreateTables.sql" />
     <Content Include="InsertTestInfo.sql" />
     <Resource Include="Media\settings.png" />
-    <Content Include="SMBDB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="SMBDB.mdf" />
     <Content Include="SMBDB_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>SMBDB.mdf</DependentUpon>
     </Content>
   </ItemGroup>

@@ -65,9 +65,10 @@ namespace WCCFNew
         /// <returns>true if it is successful</returns>
         public bool post(string text)
         {
-            int beforetc = getUserTweetCount();
+            //int beforetc = getUserTweetCount();
             TwitterStatus status = twitter.SendTweet(new SendTweetOptions() { Status = text });
-            return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            //return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            return true;//temp
         }
 
         /// <summary>
