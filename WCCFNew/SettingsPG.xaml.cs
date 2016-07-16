@@ -28,12 +28,6 @@ namespace WCCFNew
         string[] pageID;
 
         SEMDBDataContext db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\WCCF\WCCFNew\SMBDB.mdf;Integrated Security=True");
-
-        public SettingsPG()
-        {
-            InitializeComponent();
-        }
-
         #region New Client submission
         private void btnClient_Click(object sender, RoutedEventArgs e)
         {
@@ -59,13 +53,19 @@ namespace WCCFNew
             try { db.SubmitChanges(); }
             catch (Exception ex) {
                 StreamWriter w = new StreamWriter("errorLog");
-                w.Write(ex.Message + "\n" + DateTime.Now);
+                w.Write(ex.Message + "\n"+"Client Submit" + DateTime.Now +"\n\n");
                 MessageBox.Show("AN ERROR HAS OCCURED WHEN SUBMITTING THE CLIENT","Database Error",MessageBoxButton.OK,MessageBoxImage.Error);
             }
 
         }
 
         #endregion
+
+        public SettingsPG()
+        {
+            InitializeComponent();
+        }
+
         #region Twitter
         Twit newTwitter;
         private void btnTwitterAdd_Click(object sender, RoutedEventArgs e)
@@ -92,6 +92,8 @@ namespace WCCFNew
             catch (Exception ex) { MessageBox.Show("The verification failed. Try again."); }
             Verify.Text = "";
         }
+
+        
         #endregion
 
         #region Facebook Group
@@ -153,7 +155,18 @@ namespace WCCFNew
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             txtFBGroupUrl.Clear();
-        } 
+        }
         #endregion
+        private void btnEmail_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtPass.Text != "" && txtPass.Text != null && txtUser.Text != "" && txtUser.Text != null)
+            db.UMails.InsertOnSubmit(new UMail { UserName = txtUser.Text, Password = txtPass.Text });
+            try { db.SubmitChanges(); }
+            catch (Exception ex) {
+                StreamWriter w = new StreamWriter("errorLog");
+                w.Write(ex.Message + "\n"+"Email Submit" + DateTime.Now+"\n\n");
+                MessageBox.Show("AN ERROR HAS OCCURED WHEN SUBMITTING THE NEW EMAIL", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

@@ -30,7 +30,6 @@ namespace WCCFNew
         // Email Variables
         List<GmailClass> gMail = new List<GmailClass>();
         string Sub;
-        string Bod;
         //-----------------
 
         //twitter variable
@@ -44,7 +43,7 @@ namespace WCCFNew
         public QuickPost()
         {
             InitializeComponent();
-            fillCombo();
+            
             db =new SEMDBDataContext(dbConnectionString);
             //TWITTER: retrieving the db info, setting up the twit classes, and putting them in a list
             try {
@@ -84,6 +83,8 @@ namespace WCCFNew
                 w.Write(ex.Message + "\n" + "Email" + DateTime.Now + "\n\n");
                 MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING EMAIL DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            fillCombo();
         }
 
         private void fillCombo()
@@ -194,8 +195,12 @@ namespace WCCFNew
                     // Send the message
                     client.Send(emailMessage);
                 }
-                catch (Exception)
-                { }
+                catch (Exception ex)
+                {
+                    StreamWriter w = new StreamWriter("errorLog");
+                    w.Write(ex.Message + "\n" + "Email" + DateTime.Now + "\n\n");
+                    MessageBox.Show("Email failed to send.","Email failed",MessageBoxButton.OK,MessageBoxImage.Error);
+                }
             }
 
 

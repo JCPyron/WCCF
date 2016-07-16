@@ -53,7 +53,23 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Email Settings">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Right">UserName:</Label>
+                    <TextBox Name="txtUser" Grid.Column="1" VerticalAlignment="Center" Margin="15" Height="25"></TextBox>
+                    <Label Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right">Password:</Label>
+                    <TextBox Name="txtPass" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="15" Height="25"></TextBox>
+
+                    <Button Name="btnEmail" Grid.Row="2" Grid.ColumnSpan="2" Click="btnEmail_Click" Margin="25">Submit</Button>
+                </Grid>
             </TabItem>
             <TabItem Header="Google Calendar Settings">
                 <Grid Background="#FFE5E5E5"/>
