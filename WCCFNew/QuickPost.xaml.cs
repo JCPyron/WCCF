@@ -110,7 +110,7 @@ namespace WCCFNew
                 MenuItem temp = new MenuItem();
                 temp.IsCheckable = true;
                 temp.StaysOpenOnClick = true;
-                temp.Header = item.getUserName();
+                temp.Header = item.getUserHandle();
                 TwitterAccounts.Items.Add(temp);
             }
             

@@ -23,7 +23,7 @@ namespace WCCFNew
             twitter.AuthenticateWith(AToken, ATokenSecret);
             req = twitter.GetRequestToken();
             authToken = new OAuthAccessToken() { Token = AToken, TokenSecret = ATokenSecret, UserId = aUserId, ScreenName = aScreenName };
-            user = new TwitterUser();
+            twitter.GetUserProfile(new GetUserProfileOptions { });
         }
 
         public Twit(string AToken, string ATokenSecret, long AUserId, string AscreenName) : this(info.ConsumerKey, info.ConsumerSecret, AToken, ATokenSecret, AUserId, AscreenName) { }
@@ -65,10 +65,10 @@ namespace WCCFNew
         /// <returns>true if it is successful</returns>
         public bool post(string text)
         {
-            //int beforetc = getUserTweetCount();
+            int beforetc = getUserTweetCount();
             TwitterStatus status = twitter.SendTweet(new SendTweetOptions() { Status = text });
-            //return getUserTweetCount(getUserHandle()) - beforetc >= 1;
-            return true;//temp
+            return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            //return true;//temp
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace WCCFNew
         /// <returns>true if the tweet was successful</returns>
         public bool post(string text, string[] imagePaths)
         {
-            if (imagePaths.Length <= 0) return post(text); 
+            if (imagePaths.Length <= 0) return post(text);
             int beforetc = getUserTweetCount();
             Dictionary<string, Stream> dict = new Dictionary<string, Stream>();
             int checker = 0;
@@ -147,7 +147,7 @@ namespace WCCFNew
         /// </summary>
         /// <returns>user twitter handle</returns>
         public string getUserHandle()
-        { return getUserHandle(authToken.ScreenName); }
+        { return authToken.ScreenName; }
 
         /// <summary>
         /// returns the twitter handle of the targetName
@@ -293,7 +293,8 @@ namespace WCCFNew
         /// <param name="targetName">target whose tweets are being grabbed</param>
         /// <returns>list of the target's tweets</returns>
         private IEnumerable<TwitterStatus> getTweets(string targetName)
-        { return twitter.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions() { ScreenName = targetName }); }
+        { return twitter.ListTweetsOnSpecifiedUserTimeline(screenName: targetName ); }
+        //{ return twitter.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions() { ScreenName = targetName }); }
 
         /// <summary>
         /// grabs all the tweets the user linked to the access token favorited
