@@ -46,11 +46,14 @@ namespace WCCFNew
             { db.SocialMedias.InsertOnSubmit(new SocialMedia { User = newC, SMHandle = facebookEmail, SMtyKey = 2 }); }
             if (twitterHandle != null)
             { db.SocialMedias.InsertOnSubmit(new SocialMedia { User = newC, SMHandle = twitterHandle, SMtyKey = 1 }); }
-            try { db.SubmitChanges(); }
-            catch (Exception ex) {
+            db.SubmitChanges();
+            try {  }
+            catch (Exception ex)
+            {
                 StreamWriter w = new StreamWriter("errorLog");
-                w.Write(ex.Message + "\n"+"Client Submit" + DateTime.Now +"\n\n");
-                MessageBox.Show("AN ERROR HAS OCCURED WHEN SUBMITTING THE CLIENT","Database Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                w.Write(ex.Message + "\n" + "Client Submit" + DateTime.Now + "\n\n");
+                w.Close();
+                MessageBox.Show("AN ERROR HAS OCCURED WHEN SUBMITTING THE CLIENT", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
@@ -72,7 +75,8 @@ namespace WCCFNew
 
         private void btnTwitterVerify_Click(object sender, RoutedEventArgs e)
         {
-            try {
+            try
+            {
                 string v = Verify.Text;
                 if (v != null || v != "") { newTwitter.authorize(v); }
                 db.Twitters.InsertOnSubmit(new Twitter
@@ -89,7 +93,7 @@ namespace WCCFNew
             Verify.Text = "";
         }
 
-        
+
         #endregion
 
         #region Facebook Group
@@ -156,13 +160,17 @@ namespace WCCFNew
         private void btnEmail_Click(object sender, RoutedEventArgs e)
         {
             if (txtPass.Text != "" && txtPass.Text != null && txtUser.Text != "" && txtUser.Text != null)
-            db.UMails.InsertOnSubmit(new UMail { UserName = txtUser.Text, Password = txtPass.Text });
-            try { db.SubmitChanges(); }
-            catch (Exception ex) {
+                db.UMails.InsertOnSubmit(new UMail { UserName = txtUser.Text.Trim(), Password = txtPass.Text.Trim() });
+            db.SubmitChanges();
+            try { }
+            catch (Exception ex)
+            {
                 StreamWriter w = new StreamWriter("errorLog");
-                w.Write(ex.Message + "\n"+"Email Submit" + DateTime.Now+"\n\n");
+                w.Write(ex.Message + "\n" + "Email Submit" + DateTime.Now + "\n\n");
+                w.Close();
                 MessageBox.Show("AN ERROR HAS OCCURED WHEN SUBMITTING THE NEW EMAIL", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
     }
 }

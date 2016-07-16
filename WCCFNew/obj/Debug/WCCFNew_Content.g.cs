@@ -10,7 +10,5 @@
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("createtables.sql")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("inserttestinfo.sql")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("smbdb.mdf")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("smbdb_log.ldf")]
 
 

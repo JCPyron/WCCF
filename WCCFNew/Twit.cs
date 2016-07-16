@@ -65,10 +65,10 @@ namespace WCCFNew
         /// <returns>true if it is successful</returns>
         public bool post(string text)
         {
-            int beforetc = getUserTweetCount();
+            //int beforetc = getUserTweetCount();
             TwitterStatus status = twitter.SendTweet(new SendTweetOptions() { Status = text });
-            return getUserTweetCount(getUserHandle()) - beforetc >= 1;
-            //return true;//temp
+            //return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            return true;//temp
         }
 
         /// <summary>
@@ -81,12 +81,13 @@ namespace WCCFNew
         {
             if (text.Length > 117)
             { text = text.Substring(0, 117); }
-            int beforetc = getUserTweetCount();
+            //int beforetc = getUserTweetCount();
             Dictionary<string, Stream> dict = new Dictionary<string, Stream>();
             FileStream stream = new FileStream(imagePath, FileMode.Open);
             dict.Add(imagePath, stream);
             TwitterStatus status = twitter.SendTweetWithMedia(new SendTweetWithMediaOptions() { Status = text, Images = dict });
-            return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            //return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            return true;
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace WCCFNew
         public bool post(string text, string[] imagePaths)
         {
             if (imagePaths.Length <= 0) return post(text);
-            int beforetc = getUserTweetCount();
+            //int beforetc = getUserTweetCount();
             Dictionary<string, Stream> dict = new Dictionary<string, Stream>();
             int checker = 0;
             foreach (string imagePath in imagePaths)
@@ -109,7 +110,8 @@ namespace WCCFNew
                 dict.Add(imagePath, stream);
             }
             TwitterStatus status = twitter.SendTweetWithMedia(new SendTweetWithMediaOptions() { Status = text, Images = dict });
-            return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            //return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            return true;//temp
         }
 
         /// <summary>
@@ -121,9 +123,10 @@ namespace WCCFNew
         public bool post(string text, Dictionary<string, Stream> images)
         {
             if (images.Count > 4) throw new Exception("dictionary cannot have >4 picture paths");
-            int beforetc = getUserTweetCount();
+            //int beforetc = getUserTweetCount();
             TwitterStatus status = twitter.SendTweetWithMedia(new SendTweetWithMediaOptions() { Status = text, Images = images });
-            return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            //return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            return true;//temp
         }
 
 
@@ -293,7 +296,8 @@ namespace WCCFNew
         /// <param name="targetName">target whose tweets are being grabbed</param>
         /// <returns>list of the target's tweets</returns>
         private IEnumerable<TwitterStatus> getTweets(string targetName)
-        { return twitter.ListTweetsOnSpecifiedUserTimeline(screenName: targetName ); }
+        { return twitter.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions() { ScreenName=targetName }); }
+        
         //{ return twitter.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions() { ScreenName = targetName }); }
 
         /// <summary>

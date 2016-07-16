@@ -154,6 +154,7 @@ namespace WCCFNew
             bool postSuccess = true;
             foreach (FacebookLogic item in fbClass)
             { postSuccess = item.postClick(message, photoSelected, photoPath);  }
+            if (!postSuccess) { MessageBox.Show("Facebook failed to post", "facebopk failure",MessageBoxButton.OK,MessageBoxImage.Error);}
             // --------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -166,7 +167,7 @@ namespace WCCFNew
                 else//1 picture
                 { tSuc = item.post(twitterMessage, photoPath); }
             }
-            
+            if (!tSuc) { MessageBox.Show("Twitter failed to post", "twitter failure", MessageBoxButton.OK, MessageBoxImage.Error); }
             //--------------------------------------------
 
             // Email Posting Logic
@@ -211,12 +212,6 @@ namespace WCCFNew
             //Displays results-----------------------------------------------------------
             if (tSuc && postSuccess) { MessageBox.Show("Both Twitter and Facebook posted successfully",
                 "Success", MessageBoxButton.OK, MessageBoxImage.Information);}
-            else if (tSuc) { MessageBox.Show("Something went wrong with Facebook, but Twitter Succeeded.",
-                "Partial Success",MessageBoxButton.OK,MessageBoxImage.Exclamation);}
-            else if (postSuccess) { MessageBox.Show("Something went wrong with Twitter, but Facebook Succeeded.",
-                "Partial Success", MessageBoxButton.OK, MessageBoxImage.Exclamation); }
-            else MessageBox.Show("neither Facbook nor Twitter worked", 
-                "Critical Failure", MessageBoxButton.OK,MessageBoxImage.Error);
 
         }
 
