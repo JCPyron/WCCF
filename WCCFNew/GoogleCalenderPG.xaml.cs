@@ -88,7 +88,7 @@ namespace WCCFNew
 
         private void grabDBInfo()
         {
-            var db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\WCCF\WCCFNew\SMBDB.mdf;Integrated Security=True");
+            var db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\SMBDB.mdf;Integrated Security=True;Connect Timeout=30");
             // Change this for final DB.
             Table<Email> clients = db.GetTable<Email>();
             

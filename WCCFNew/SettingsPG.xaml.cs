@@ -27,14 +27,10 @@ namespace WCCFNew
         string[] groupID;
         string[] pageID;
 
-        SEMDBDataContext db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\WCCF\WCCFNew\SMBDB.mdf;Integrated Security=True");
+        SEMDBDataContext db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\SMBDB.mdf;Integrated Security=True;Connect Timeout=30");
         #region New Client submission
         private void btnClient_Click(object sender, RoutedEventArgs e)
         {
-            string address = AddressTxtBox.Text;
-            string city = CityTxtBox.Text;
-            string state = StateTxtBox.Text;
-            string zip = ZipTxtBox.Text;
             string email = EmailTxtBox.Text;
             string twitterHandle = TwitterHandleTxtBox.Text;
             string facebookEmail = FacebookEmailTxtBox.Text;
