@@ -63,7 +63,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label VerticalAlignment="Center" HorizontalAlignment="Right">UserName:</Label>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Right">User Name:</Label>
                     <TextBox Name="txtUser" Grid.Column="1" VerticalAlignment="Center" Margin="15" Height="25"></TextBox>
                     <Label Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right">Password:</Label>
                     <TextBox Name="txtPass" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="15" Height="25"></TextBox>
@@ -89,21 +89,19 @@
                             </Label>
                         </StackPanel>
                     </Expander>
-                    <Expander Header="Add a client">
+                    <Expander Header="Add a client" Height="260" Margin="0,0,-0.4,0">
                         <Grid >
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Label Margin="10,0,0,0" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">First Name:</Label>
                             <TextBox Name="FirstNameTxtBox" Grid.Column="1" Margin="5,10,5,10" ></TextBox>
@@ -111,17 +109,7 @@
                             <Label Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center">Last Name:</Label>
                             <TextBox Name="LastNameTxtBox" Grid.Row="1" Grid.Column="1" Margin="5,10,5,10" />
 
-                            <Label Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center">Address:</Label>
-                            <TextBox Name="AddressTxtBox" Grid.Row="2" Margin="5,10,5,10" Grid.Column="1"/>
-
-                            <Label Grid.Row="3" Margin="10,0,0,0" VerticalAlignment="Center">City:</Label>
-                            <TextBox Name="CityTxtBox" Grid.Row="3" Grid.Column="1" Margin="5,10,5,10" />
-
-                            <Label Grid.Row="4" Margin="10,0,0,0" VerticalAlignment="Center">State:</Label>
-                            <TextBox Name="StateTxtBox" Grid.Row="4" Grid.Column="1" Margin="5,10,5,10"/>
-
-                            <Label Grid.Row="5" Margin="10,0,0,0" VerticalAlignment="Center">Zip:</Label>
-                            <TextBox Name="ZipTxtBox" Grid.Row="5" Grid.Column="1"  Margin="5,10,5,10"/>
+                            <CheckBox Name="subCk" IsChecked="True" Grid.Row="2" Grid.Column="1" Margin="10,20">Subscribe?</CheckBox>
 
                             <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">Email:</Label>
                             <TextBox Name="EmailTxtBox" Grid.Column="3" Grid.Row="0" Margin="5,10,5,10"  />
@@ -132,7 +120,7 @@
                             <Label Grid.Row="2" Grid.Column="2" Margin="10,0,0,0" VerticalAlignment="Center">Facebook Email:</Label>
                             <TextBox Name="FacebookEmailTxtBox" Grid.Row="2" Grid.Column="3" Margin="5,10,5,10"/>
                             
-                            <Button Name="btnClient"  Grid.Row="3" Grid.Column="2" Background="Gray" Foreground="White" Click="btnClient_Click" Margin="25,25,25,25" Grid.RowSpan="3" Grid.ColumnSpan="2">Submit</Button>
+                            <Button Name="btnClient"  Grid.Row="3" Grid.Column="1" Background="Gray" Foreground="White" Click="btnClient_Click" Margin="15" Grid.RowSpan="3" Grid.ColumnSpan="2">Submit</Button>
                         </Grid>
                     </Expander>
                 </StackPanel>

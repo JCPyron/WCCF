@@ -53,7 +53,7 @@ namespace WCCFNew
             }
             catch (Exception ex)
             {
-                StreamWriter w = new StreamWriter("errorLog");
+                StreamWriter w = new StreamWriter("errorLog.txt");
                 w.Write(ex.Message + "\n"+"Twitter" + DateTime.Now+"\n\n");
                 MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING TWITTER DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -66,7 +66,7 @@ namespace WCCFNew
             }
             catch (Exception ex)
             {
-                StreamWriter w = new StreamWriter("errorLog");
+                StreamWriter w = new StreamWriter("errorLog.txt");
                 w.Write(ex.Message + "\n" + "Facebook" + DateTime.Now + "\n\n");
                 MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING FACEBOOK DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -79,7 +79,7 @@ namespace WCCFNew
             }
             catch (Exception ex)
             {
-                StreamWriter w = new StreamWriter("errorLog");
+                StreamWriter w = new StreamWriter("errorLog.txt");
                 w.Write(ex.Message + "\n" + "Email" + DateTime.Now + "\n\n");
                 MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING EMAIL DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -197,7 +197,7 @@ namespace WCCFNew
                 }
                 catch (Exception ex)
                 {
-                    StreamWriter w = new StreamWriter("errorLog");
+                    StreamWriter w = new StreamWriter("errorLog.txt");
                     w.Write(ex.Message + "\n" + "Email" + DateTime.Now + "\n\n");
                     MessageBox.Show("Email failed to send.","Email failed",MessageBoxButton.OK,MessageBoxImage.Error);
                 }
