@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,15 +30,23 @@ namespace WCCFNew
         SEMDBDataContext db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\SMBDB.mdf;Integrated Security=True;Connect Timeout=30");
         #region New Client submission
         private void btnClient_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             string email = EmailTxtBox.Text;
             string twitterHandle = TwitterHandleTxtBox.Text;
             string facebookEmail = FacebookEmailTxtBox.Text;
-            User newC = new User
+            User newC = null;
+            try
             {
-                FirstName = FirstNameTxtBox.Text,
-                LastName = LastNameTxtBox.Text,
-            };
+                newC = new User
+                {
+                    FirstName = FirstNameTxtBox.Text,
+                    LastName = LastNameTxtBox.Text,
+                };
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Please enter both a first and last name for the client.");
+            }
             db.Users.InsertOnSubmit(newC);
             if (email != null)
             { db.Emails.InsertOnSubmit(new Email { EmailAddress = email, User = newC }); }
@@ -47,13 +55,23 @@ namespace WCCFNew
             if (twitterHandle != null)
             { db.SocialMedias.InsertOnSubmit(new SocialMedia { User = newC, SMHandle = twitterHandle, SMtyKey = 1 }); }
             db.SubmitChanges();
-            try {  }
-            catch (Exception ex)
+            if (email != null || facebookEmail != null || twitterHandle != null)
             {
-                StreamWriter w = new StreamWriter("errorLog");
-                w.Write(ex.Message + "\n" + "Client Submit" + DateTime.Now + "\n\n");
-                w.Close();
-                MessageBox.Show("AN ERROR HAS OCCURED WHEN SUBMITTING THE CLIENT", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                try
+                {
+                    db.SubmitChanges();
+                    MessageBox.Show("Submission successful");
+                }
+                catch (Exception ex)
+                {
+                    StreamWriter w = new StreamWriter("errorLog");
+                    w.Write(ex.Message + "\n" + "Client Submit" + DateTime.Now + "\n\n");
+                    MessageBox.Show("AN ERROR HAS OCCURED WHEN SUBMITTING THE CLIENT", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please enter data in at least one box");
             }
 
         }

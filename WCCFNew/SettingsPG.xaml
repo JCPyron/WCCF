@@ -85,7 +85,7 @@
                                 <Hyperlink>Adding a Facebook account</Hyperlink>
                             </Label>
                             <Label>
-                                <Hyperlink>Help and Support</Hyperlink>
+                                <Hyperlink NavigateUri="">Help and Support</Hyperlink>
                             </Label>
                         </StackPanel>
                     </Expander>
