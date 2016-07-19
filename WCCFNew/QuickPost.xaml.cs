@@ -37,7 +37,7 @@ namespace WCCFNew
 
         private const int MAX_CHARS = 140;
         private const int MAX_PIC_CHARS = 117;
-        private static string dbConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\SMBDB.mdf;Integrated Security=True;Connect Timeout=30";
+        private static string dbConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\aprei\Documents\SMBDB.mdf;Integrated Security=True;Connect Timeout=30";
         private SEMDBDataContext db;
 
         public QuickPost()
@@ -142,6 +142,11 @@ namespace WCCFNew
 
         private void SendMSGBTN_Click(object sender, RoutedEventArgs e)
         {
+
+            
+
+
+
             string message = EventText.Text;
             string twitterMessage = TwitterText.Text;
             //string postSuc = "";
