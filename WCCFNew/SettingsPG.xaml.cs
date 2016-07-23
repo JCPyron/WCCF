@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +27,7 @@ namespace WCCFNew
         string[] groupID;
         string[] pageID;
 
-        SEMDBDataContext db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\SMBDB.mdf;Integrated Security=True;Connect Timeout=30");
+        SEMDBDataContext db = new SEMDBDataContext(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\aprei\Documents\SMBDB.mdf;Integrated Security=True;Connect Timeout=30");
         #region New Client submission
         private void btnClient_Click(object sender, RoutedEventArgs e)
         { 
@@ -95,7 +95,7 @@ namespace WCCFNew
         {
             try
             {
-                string v = Verify.Text;
+                string v = Verify.Text.Trim();
                 if (v != null || v != "") { newTwitter.authorize(v); }
                 db.Twitters.InsertOnSubmit(new Twitter
                 {
@@ -137,6 +137,11 @@ namespace WCCFNew
             {
                 MessageBox.Show("An unexpected error has occured", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         // Sets the post page with the given url (Through Page ID)
