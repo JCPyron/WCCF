@@ -65,10 +65,10 @@ namespace WCCFNew
         /// <returns>true if it is successful</returns>
         public bool post(string text)
         {
-            int beforetc = getUserTweetCount();
+            //int beforetc = getUserTweetCount();
             TwitterStatus status = twitter.SendTweet(new SendTweetOptions() { Status = text });
-            return getUserTweetCount(getUserHandle()) - beforetc >= 1;
-            //return true;//temp
+            //return getUserTweetCount(getUserHandle()) - beforetc >= 1;
+            return true;//temp
         }
 
         /// <summary>
@@ -293,8 +293,7 @@ namespace WCCFNew
         /// <param name="targetName">target whose tweets are being grabbed</param>
         /// <returns>list of the target's tweets</returns>
         private IEnumerable<TwitterStatus> getTweets(string targetName)
-        { return twitter.ListTweetsOnSpecifiedUserTimeline(screenName: targetName ); }
-        //{ return twitter.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions() { ScreenName = targetName }); }
+        { return twitter.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions() { ScreenName = targetName }); }
 
         /// <summary>
         /// grabs all the tweets the user linked to the access token favorited

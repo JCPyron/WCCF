@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Data.Linq;
 using System.Net.Mail;
 using System.Windows.Navigation;
+using Microsoft.VisualBasic;
 using Microsoft.Win32; 
 
 namespace WCCFNew
@@ -16,10 +17,7 @@ namespace WCCFNew
     /// Interaction logic for QuickPost.xaml
     /// </summary>
     public partial class QuickPost : Page
-    {
-        // Email - Additions to be made.
-        // Facebook - Finished.
-        // Twitter - Needs to be added in.
+    { 
 
         // Facebook Variables -------------------------------------------------------------------------------
         List<FacebookLogic> fbClass = new List<FacebookLogic>();
@@ -45,19 +43,19 @@ namespace WCCFNew
             InitializeComponent();
             
             db =new SEMDBDataContext(dbConnectionString);
-            //TWITTER: retrieving the db info, setting up the twit classes, and putting them in a list
-            try {
-                Table<Twitter> t = db.GetTable<Twitter>();
-                foreach (Twitter item in t)
-                { twitter.Add(new Twit(item.AToken, item.ASecret, item.UserId, item.ScreenName.Trim())); }
-            }
-            catch (Exception ex)
-            {
-                StreamWriter w = new StreamWriter("errorLog.txt");
-                w.Write(ex.Message + "\n"+"Twitter" + DateTime.Now+"\n\n");
-                w.Close();
-                MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING TWITTER DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            ////TWITTER: retrieving the db info, setting up the twit classes, and putting them in a list
+            //try {
+            //    Table<Twitter> t = db.GetTable<Twitter>();
+            //    foreach (Twitter item in t)
+            //    { twitter.Add(new Twit(item.AToken, item.ASecret, item.UserId, item.ScreenName.Trim())); }
+            //}
+            //catch (Exception ex)
+            //{
+            //    StreamWriter w = new StreamWriter("errorLog.txt");
+            //    w.Write(ex.Message + "\n"+"Twitter" + DateTime.Now+"\n\n");
+            //    w.Close();
+            //    MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING TWITTER DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
 
             //FACEBOOK: retrieves the db info and adds it to a list
             try {
@@ -103,17 +101,17 @@ namespace WCCFNew
                 temp.Header = item.getUserName();
                 FacebookAccounts.Items.Add(temp);
             }
-            
-            //twitter checkboxes
-            foreach (var item in twitter)
-            {
-                MenuItem temp = new MenuItem();
-                temp.IsCheckable = true;
-                temp.StaysOpenOnClick = true;
-                temp.Header = item.getUserHandle();
-                TwitterAccounts.Items.Add(temp);
-            }
-            
+
+            ////twitter checkboxes
+            //foreach (var item in twitter)
+            //{
+            //    MenuItem temp = new MenuItem();
+            //    temp.IsCheckable = true;
+            //    temp.StaysOpenOnClick = true;
+            //    temp.Header = item.getUserHandle();
+            //    TwitterAccounts.Items.Add(temp);
+            //}
+
 
             //email checkboxes
             foreach (var item in gMail)
@@ -159,13 +157,20 @@ namespace WCCFNew
 
             //twitter posting logic------------------------------
             bool tSuc = true;
-            foreach (Twit item in twitter)
+            try
             {
-                if (photoPath == null || photoPath.Length <= 0)//no picture
-                { tSuc = item.post(twitterMessage); }
-                else//1 picture
-                { tSuc = item.post(twitterMessage, photoPath); }
+                if (twitter.Count > 0)
+                {
+                    foreach (Twit item in twitter)
+                    {
+                        if (photoPath == null || photoPath.Length <= 0)//no picture
+                        { tSuc = item.post(twitterMessage); }
+                        else//1 picture
+                        { tSuc = item.post(twitterMessage, photoPath); }
+                    }
+                }
             }
+            catch(Exception ex) { tSuc = false; }
             
             //--------------------------------------------
 
@@ -294,6 +299,15 @@ namespace WCCFNew
         {
             SettingsPG sp = new SettingsPG();
             NavigationService.Navigate(sp);
+        }
+
+        private void TwitterAdd_Click(object sender, RoutedEventArgs e)
+        {
+            Twit temp = new Twit();
+            if(temp.authorize(Interaction.InputBox("Verification Code:", "Verify")))
+            { MessageBox.Show("Successful verification!");}
+
+            twitter.Add(temp);
         }
     }
 }

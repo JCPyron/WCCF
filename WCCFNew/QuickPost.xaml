@@ -41,10 +41,11 @@
                 <Button x:Name="btnSelectPhoto" Style="{StaticResource buttonStyle}" Content="Browse" Click="btnSelectPhoto_Click"/>
             </Border>
             <Grid Grid.Row="1">
-
                 <Menu HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" FontSize="16" FontWeight="Bold" Foreground="#FF333333">
                     <MenuItem Name="FacebookAccounts" Header="_Facebook Accounts" HorizontalContentAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
-                    <MenuItem Name="TwitterAccounts" Header="_Twitter Accounts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <MenuItem Name="TwitterAccounts" Header="_Twitter Accounts" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <MenuItem Name="TwitterAdd" Header="Add Account" Click="TwitterAdd_Click" ></MenuItem>
+                    </MenuItem>
                     <MenuItem Name="EMailAccounts" Header="_E-Mail Accounts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Menu>
 
