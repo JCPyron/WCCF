@@ -1,10 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SMBDB" Class="SEMDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\SMBDB.mdf;Integrated Security=True" SettingsObjectName="WCCFNew.Properties.Settings" SettingsPropertyName="SMBDBConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\aprei\Documents\SMBDB.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="WCCFNew.Properties.Settings" SettingsPropertyName="SMBDBConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Email" Member="Emails">
     <Type Name="Email">
-      <Column Name="User_UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="User_UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="EmailAddress" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="EmailID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Association Name="User_Email" Member="User" ThisKey="User_UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="isSubbed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="User_Email" Member="Emails" ThisKey="UserID" OtherKey="User_UserID" Type="Email" />
+      <Association Name="User_SocialMedia" Member="SocialMedias" ThisKey="UserID" OtherKey="User_UserID" Type="SocialMedia" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Face" Member="Faces">
+    <Type Name="Face">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AToken" Type="System.String" DbType="NChar(100) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.SMtype" Member="SMtypes">
@@ -23,29 +40,6 @@
       <Association Name="User_SocialMedia" Member="User" ThisKey="User_UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Users" Member="Users">
-    <Type Name="User">
-      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="FirstName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="LastName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="isSubbed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="User_Email" Member="Email" ThisKey="UserID" OtherKey="User_UserID" Type="Email" Cardinality="One" />
-      <Association Name="User_SocialMedia" Member="SocialMedias" ThisKey="UserID" OtherKey="User_UserID" Type="SocialMedia" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Face" Member="Faces">
-    <Type Name="Face">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="AToken" Type="System.String" DbType="NChar(100) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.UMail" Member="UMails">
-    <Type Name="UMail">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="UserName" Type="System.String" DbType="NChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Password" Type="System.String" DbType="NChar(100) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.Twitter" Member="Twitters">
     <Type Name="Twitter">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -53,6 +47,13 @@
       <Column Name="ASecret" Type="System.String" DbType="NChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="UserId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="ScreenName" Type="System.String" DbType="NChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UMail" Member="UMails">
+    <Type Name="UMail">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NChar(100) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

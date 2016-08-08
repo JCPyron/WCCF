@@ -33,28 +33,28 @@ namespace WCCFNew
     partial void InsertEmail(Email instance);
     partial void UpdateEmail(Email instance);
     partial void DeleteEmail(Email instance);
-    partial void InsertSMtype(SMtype instance);
-    partial void UpdateSMtype(SMtype instance);
-    partial void DeleteSMtype(SMtype instance);
-    partial void InsertSocialMedia(SocialMedia instance);
-    partial void UpdateSocialMedia(SocialMedia instance);
-    partial void DeleteSocialMedia(SocialMedia instance);
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
     partial void InsertFace(Face instance);
     partial void UpdateFace(Face instance);
     partial void DeleteFace(Face instance);
-    partial void InsertUMail(UMail instance);
-    partial void UpdateUMail(UMail instance);
-    partial void DeleteUMail(UMail instance);
+    partial void InsertSMtype(SMtype instance);
+    partial void UpdateSMtype(SMtype instance);
+    partial void DeleteSMtype(SMtype instance);
+    partial void InsertSocialMedia(SocialMedia instance);
+    partial void UpdateSocialMedia(SocialMedia instance);
+    partial void DeleteSocialMedia(SocialMedia instance);
     partial void InsertTwitter(Twitter instance);
     partial void UpdateTwitter(Twitter instance);
     partial void DeleteTwitter(Twitter instance);
+    partial void InsertUMail(UMail instance);
+    partial void UpdateUMail(UMail instance);
+    partial void DeleteUMail(UMail instance);
     #endregion
 		
 		public SEMDBDataContext() : 
-				base(global::WCCFNew.Properties.Settings.Default.SMBDBConnectionString, mappingSource)
+				base(global::WCCFNew.Properties.Settings.Default.SMBDBConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -91,22 +91,6 @@ namespace WCCFNew
 			}
 		}
 		
-		public System.Data.Linq.Table<SMtype> SMtypes
-		{
-			get
-			{
-				return this.GetTable<SMtype>();
-			}
-		}
-		
-		public System.Data.Linq.Table<SocialMedia> SocialMedias
-		{
-			get
-			{
-				return this.GetTable<SocialMedia>();
-			}
-		}
-		
 		public System.Data.Linq.Table<User> Users
 		{
 			get
@@ -123,11 +107,19 @@ namespace WCCFNew
 			}
 		}
 		
-		public System.Data.Linq.Table<UMail> UMails
+		public System.Data.Linq.Table<SMtype> SMtypes
 		{
 			get
 			{
-				return this.GetTable<UMail>();
+				return this.GetTable<SMtype>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SocialMedia> SocialMedias
+		{
+			get
+			{
+				return this.GetTable<SocialMedia>();
 			}
 		}
 		
@@ -136,6 +128,14 @@ namespace WCCFNew
 			get
 			{
 				return this.GetTable<Twitter>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UMail> UMails
+		{
+			get
+			{
+				return this.GetTable<UMail>();
 			}
 		}
 	}
@@ -150,6 +150,8 @@ namespace WCCFNew
 		
 		private string _EmailAddress;
 		
+		private int _EmailID;
+		
 		private EntityRef<User> _User;
 		
     #region Extensibility Method Definitions
@@ -160,6 +162,8 @@ namespace WCCFNew
     partial void OnUser_UserIDChanged();
     partial void OnEmailAddressChanging(string value);
     partial void OnEmailAddressChanged();
+    partial void OnEmailIDChanging(int value);
+    partial void OnEmailIDChanged();
     #endregion
 		
 		public Email()
@@ -168,7 +172,7 @@ namespace WCCFNew
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_User_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_User_UserID", DbType="Int NOT NULL")]
 		public int User_UserID
 		{
 			get
@@ -212,6 +216,26 @@ namespace WCCFNew
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int EmailID
+		{
+			get
+			{
+				return this._EmailID;
+			}
+			set
+			{
+				if ((this._EmailID != value))
+				{
+					this.OnEmailIDChanging(value);
+					this.SendPropertyChanging();
+					this._EmailID = value;
+					this.SendPropertyChanged("EmailID");
+					this.OnEmailIDChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Email", Storage="_User", ThisKey="User_UserID", OtherKey="UserID", IsForeignKey=true)]
 		public User User
 		{
@@ -229,12 +253,12 @@ namespace WCCFNew
 					if ((previousValue != null))
 					{
 						this._User.Entity = null;
-						previousValue.Email = null;
+						previousValue.Emails.Remove(this);
 					}
 					this._User.Entity = value;
 					if ((value != null))
 					{
-						value.Email = this;
+						value.Emails.Add(this);
 						this._User_UserID = value.UserID;
 					}
 					else
@@ -242,6 +266,282 @@ namespace WCCFNew
 						this._User_UserID = default(int);
 					}
 					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UserID;
+		
+		private string _FirstName;
+		
+		private string _LastName;
+		
+		private bool _isSubbed;
+		
+		private EntitySet<Email> _Emails;
+		
+		private EntitySet<SocialMedia> _SocialMedias;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    partial void OnFirstNameChanging(string value);
+    partial void OnFirstNameChanged();
+    partial void OnLastNameChanging(string value);
+    partial void OnLastNameChanged();
+    partial void OnisSubbedChanging(bool value);
+    partial void OnisSubbedChanged();
+    #endregion
+		
+		public User()
+		{
+			this._Emails = new EntitySet<Email>(new Action<Email>(this.attach_Emails), new Action<Email>(this.detach_Emails));
+			this._SocialMedias = new EntitySet<SocialMedia>(new Action<SocialMedia>(this.attach_SocialMedias), new Action<SocialMedia>(this.detach_SocialMedias));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string FirstName
+		{
+			get
+			{
+				return this._FirstName;
+			}
+			set
+			{
+				if ((this._FirstName != value))
+				{
+					this.OnFirstNameChanging(value);
+					this.SendPropertyChanging();
+					this._FirstName = value;
+					this.SendPropertyChanged("FirstName");
+					this.OnFirstNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string LastName
+		{
+			get
+			{
+				return this._LastName;
+			}
+			set
+			{
+				if ((this._LastName != value))
+				{
+					this.OnLastNameChanging(value);
+					this.SendPropertyChanging();
+					this._LastName = value;
+					this.SendPropertyChanged("LastName");
+					this.OnLastNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isSubbed", DbType="Bit NOT NULL")]
+		public bool isSubbed
+		{
+			get
+			{
+				return this._isSubbed;
+			}
+			set
+			{
+				if ((this._isSubbed != value))
+				{
+					this.OnisSubbedChanging(value);
+					this.SendPropertyChanging();
+					this._isSubbed = value;
+					this.SendPropertyChanged("isSubbed");
+					this.OnisSubbedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Email", Storage="_Emails", ThisKey="UserID", OtherKey="User_UserID")]
+		public EntitySet<Email> Emails
+		{
+			get
+			{
+				return this._Emails;
+			}
+			set
+			{
+				this._Emails.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_SocialMedia", Storage="_SocialMedias", ThisKey="UserID", OtherKey="User_UserID")]
+		public EntitySet<SocialMedia> SocialMedias
+		{
+			get
+			{
+				return this._SocialMedias;
+			}
+			set
+			{
+				this._SocialMedias.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Emails(Email entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Emails(Email entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_SocialMedias(SocialMedia entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_SocialMedias(SocialMedia entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Face")]
+	public partial class Face : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _AToken;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnATokenChanging(string value);
+    partial void OnATokenChanged();
+    #endregion
+		
+		public Face()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AToken", DbType="NChar(100) NOT NULL", CanBeNull=false)]
+		public string AToken
+		{
+			get
+			{
+				return this._AToken;
+			}
+			set
+			{
+				if ((this._AToken != value))
+				{
+					this.OnATokenChanging(value);
+					this.SendPropertyChanging();
+					this._AToken = value;
+					this.SendPropertyChanged("AToken");
+					this.OnATokenChanged();
 				}
 			}
 		}
@@ -573,396 +873,6 @@ namespace WCCFNew
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
-	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _UserID;
-		
-		private string _FirstName;
-		
-		private string _LastName;
-		
-		private bool _isSubbed;
-		
-		private EntityRef<Email> _Email;
-		
-		private EntitySet<SocialMedia> _SocialMedias;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUserIDChanging(int value);
-    partial void OnUserIDChanged();
-    partial void OnFirstNameChanging(string value);
-    partial void OnFirstNameChanged();
-    partial void OnLastNameChanging(string value);
-    partial void OnLastNameChanged();
-    partial void OnisSubbedChanging(bool value);
-    partial void OnisSubbedChanged();
-    #endregion
-		
-		public User()
-		{
-			this._Email = default(EntityRef<Email>);
-			this._SocialMedias = new EntitySet<SocialMedia>(new Action<SocialMedia>(this.attach_SocialMedias), new Action<SocialMedia>(this.detach_SocialMedias));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int UserID
-		{
-			get
-			{
-				return this._UserID;
-			}
-			set
-			{
-				if ((this._UserID != value))
-				{
-					this.OnUserIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserID = value;
-					this.SendPropertyChanged("UserID");
-					this.OnUserIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string FirstName
-		{
-			get
-			{
-				return this._FirstName;
-			}
-			set
-			{
-				if ((this._FirstName != value))
-				{
-					this.OnFirstNameChanging(value);
-					this.SendPropertyChanging();
-					this._FirstName = value;
-					this.SendPropertyChanged("FirstName");
-					this.OnFirstNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string LastName
-		{
-			get
-			{
-				return this._LastName;
-			}
-			set
-			{
-				if ((this._LastName != value))
-				{
-					this.OnLastNameChanging(value);
-					this.SendPropertyChanging();
-					this._LastName = value;
-					this.SendPropertyChanged("LastName");
-					this.OnLastNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isSubbed", DbType="Bit NOT NULL")]
-		public bool isSubbed
-		{
-			get
-			{
-				return this._isSubbed;
-			}
-			set
-			{
-				if ((this._isSubbed != value))
-				{
-					this.OnisSubbedChanging(value);
-					this.SendPropertyChanging();
-					this._isSubbed = value;
-					this.SendPropertyChanged("isSubbed");
-					this.OnisSubbedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Email", Storage="_Email", ThisKey="UserID", OtherKey="User_UserID", IsUnique=true, IsForeignKey=false)]
-		public Email Email
-		{
-			get
-			{
-				return this._Email.Entity;
-			}
-			set
-			{
-				Email previousValue = this._Email.Entity;
-				if (((previousValue != value) 
-							|| (this._Email.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Email.Entity = null;
-						previousValue.User = null;
-					}
-					this._Email.Entity = value;
-					if ((value != null))
-					{
-						value.User = this;
-					}
-					this.SendPropertyChanged("Email");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_SocialMedia", Storage="_SocialMedias", ThisKey="UserID", OtherKey="User_UserID")]
-		public EntitySet<SocialMedia> SocialMedias
-		{
-			get
-			{
-				return this._SocialMedias;
-			}
-			set
-			{
-				this._SocialMedias.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_SocialMedias(SocialMedia entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_SocialMedias(SocialMedia entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Face")]
-	public partial class Face : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _AToken;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnATokenChanging(string value);
-    partial void OnATokenChanged();
-    #endregion
-		
-		public Face()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AToken", DbType="NChar(100) NOT NULL", CanBeNull=false)]
-		public string AToken
-		{
-			get
-			{
-				return this._AToken;
-			}
-			set
-			{
-				if ((this._AToken != value))
-				{
-					this.OnATokenChanging(value);
-					this.SendPropertyChanging();
-					this._AToken = value;
-					this.SendPropertyChanged("AToken");
-					this.OnATokenChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UMail")]
-	public partial class UMail : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _UserName;
-		
-		private string _Password;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
-    partial void OnPasswordChanging(string value);
-    partial void OnPasswordChanged();
-    #endregion
-		
-		public UMail()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NChar(100) NOT NULL", CanBeNull=false)]
-		public string UserName
-		{
-			get
-			{
-				return this._UserName;
-			}
-			set
-			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NChar(100) NOT NULL", CanBeNull=false)]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this.OnPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._Password = value;
-					this.SendPropertyChanged("Password");
-					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Twitter")]
 	public partial class Twitter : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1096,6 +1006,116 @@ namespace WCCFNew
 					this._ScreenName = value;
 					this.SendPropertyChanged("ScreenName");
 					this.OnScreenNameChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UMail")]
+	public partial class UMail : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _UserName;
+		
+		private string _Password;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
+    #endregion
+		
+		public UMail()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NChar(100) NOT NULL", CanBeNull=false)]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NChar(100) NOT NULL", CanBeNull=false)]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
 				}
 			}
 		}

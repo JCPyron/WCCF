@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Net;
@@ -8,8 +8,7 @@ using System.Windows.Media;
 using System.Data.Linq;
 using System.Net.Mail;
 using System.Windows.Navigation;
-using Microsoft.VisualBasic;
-using Microsoft.Win32; 
+using Microsoft.Win32;
 
 namespace WCCFNew
 {
@@ -17,7 +16,10 @@ namespace WCCFNew
     /// Interaction logic for QuickPost.xaml
     /// </summary>
     public partial class QuickPost : Page
-    { 
+    {
+        // Email - Additions to be made.
+        // Facebook - Finished.
+        // Twitter - Needs to be added in.
 
         // Facebook Variables -------------------------------------------------------------------------------
         List<FacebookLogic> fbClass = new List<FacebookLogic>();
@@ -35,30 +37,32 @@ namespace WCCFNew
 
         private const int MAX_CHARS = 140;
         private const int MAX_PIC_CHARS = 117;
-        private static string dbConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\SMBDB.mdf;Integrated Security=True;Connect Timeout=30";
+        private static string dbConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\aprei\Documents\SMBDB.mdf;Integrated Security=True;Connect Timeout=30";
         private SEMDBDataContext db;
 
         public QuickPost()
         {
             InitializeComponent();
-            
-            db =new SEMDBDataContext(dbConnectionString);
-            ////TWITTER: retrieving the db info, setting up the twit classes, and putting them in a list
-            //try {
-            //    Table<Twitter> t = db.GetTable<Twitter>();
-            //    foreach (Twitter item in t)
-            //    { twitter.Add(new Twit(item.AToken, item.ASecret, item.UserId, item.ScreenName.Trim())); }
-            //}
-            //catch (Exception ex)
-            //{
-            //    StreamWriter w = new StreamWriter("errorLog.txt");
-            //    w.Write(ex.Message + "\n"+"Twitter" + DateTime.Now+"\n\n");
-            //    w.Close();
-            //    MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING TWITTER DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
+
+            db = new SEMDBDataContext(dbConnectionString);
+            //TWITTER: retrieving the db info, setting up the twit classes, and putting them in a list
+            try
+            {
+                Table<Twitter> t = db.GetTable<Twitter>();
+                foreach (Twitter item in t)
+                { twitter.Add(new Twit(item.AToken, item.ASecret, item.UserId, item.ScreenName.Trim())); }
+            }
+            catch (Exception ex)
+            {
+                StreamWriter w = new StreamWriter("errorLog.txt");
+                w.Write(ex.Message + "\n" + "Twitter" + DateTime.Now + "\n\n");
+                w.Close();
+                MessageBox.Show("AN ERROR HAS OCCURED WHEN PULLING TWITTER DATA", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             //FACEBOOK: retrieves the db info and adds it to a list
-            try {
+            try
+            {
                 Table<Face> face = db.GetTable<Face>();
                 foreach (Face fb in face)
                 { fbClass.Add(new FacebookLogic(fb.AToken)); }
@@ -72,7 +76,8 @@ namespace WCCFNew
             }
 
             //EMAIL: retrieves the db info
-            try {
+            try
+            {
                 Table<UMail> m = db.GetTable<UMail>();
                 foreach (UMail temp in m)
                 { gMail.Add(new GmailClass(temp.UserName, temp.Password)); }
@@ -91,10 +96,11 @@ namespace WCCFNew
         {
 
             //Table<SMAccountInfo> accounts = new Table<SMAccountInfo>();         
-            
+
             //facebook check boxes
             foreach (var item in fbClass)
             {
+
                 MenuItem temp = new MenuItem();
                 temp.IsCheckable = true;
                 temp.StaysOpenOnClick = true;
@@ -102,15 +108,15 @@ namespace WCCFNew
                 FacebookAccounts.Items.Add(temp);
             }
 
-            ////twitter checkboxes
-            //foreach (var item in twitter)
-            //{
-            //    MenuItem temp = new MenuItem();
-            //    temp.IsCheckable = true;
-            //    temp.StaysOpenOnClick = true;
-            //    temp.Header = item.getUserHandle();
-            //    TwitterAccounts.Items.Add(temp);
-            //}
+            //twitter checkboxes
+            foreach (var item in twitter)
+            {
+                MenuItem temp = new MenuItem();
+                temp.IsCheckable = true;
+                temp.StaysOpenOnClick = true;
+                temp.Header = item.getUserHandle();
+                TwitterAccounts.Items.Add(temp);
+            }
 
 
             //email checkboxes
@@ -140,6 +146,35 @@ namespace WCCFNew
 
         private void SendMSGBTN_Click(object sender, RoutedEventArgs e)
         {
+            //Finds the items checked in the combo boxes
+            List<string> SendingEmailAccounts = new List<string>();
+            List<string> SendingFBAccounts = new List<string>();
+            List<string> SendingTwitterAccounts = new List<string>();
+
+            foreach (MenuItem item in EMailAccounts.Items)
+            {
+                if (item.IsChecked)
+                {
+                    SendingEmailAccounts.Add(item.Header.ToString());
+                }
+            }
+
+            foreach (MenuItem item in FacebookAccounts.Items)
+            {
+                if (item.IsChecked)
+                {
+                    SendingFBAccounts.Add(item.Header.ToString());
+                }
+            }
+
+            foreach (MenuItem item in TwitterAccounts.Items)
+            {
+                if (item.IsChecked)
+                {
+                    SendingTwitterAccounts.Add(item.Header.ToString());
+                }
+            }
+
             string message = EventText.Text;
             string twitterMessage = TwitterText.Text;
             //string postSuc = "";
@@ -150,78 +185,87 @@ namespace WCCFNew
             { photoSelected = false; }
 
             bool postSuccess = true;
+            
+            //The following nested loop is supposed to check and make sure the items checked in the combo boxes match any of the accounts listed in the
+            //database.
             foreach (FacebookLogic item in fbClass)
-            { postSuccess = item.postClick(message, photoSelected, photoPath);  }
+            {
+               
+                if (SendingFBAccounts.Contains(item.getUserName()))
+                {
+                    postSuccess = item.postClick(message, photoSelected, photoPath);
+                }
+                if (!postSuccess) { MessageBox.Show("Facebook failed to post", "facebopk failure", MessageBoxButton.OK, MessageBoxImage.Error); }
+            }
+
+
             // --------------------------------------------------------------------------------------------------------------------------------------
 
 
             //twitter posting logic------------------------------
             bool tSuc = true;
-            try
+            foreach (Twit item in twitter)
             {
-                if (twitter.Count > 0)
+               
+                if (SendingTwitterAccounts.Contains(item.getUserHandle()))
                 {
-                    foreach (Twit item in twitter)
-                    {
-                        if (photoPath == null || photoPath.Length <= 0)//no picture
-                        { tSuc = item.post(twitterMessage); }
-                        else//1 picture
-                        { tSuc = item.post(twitterMessage, photoPath); }
-                    }
+                    if (photoPath == null || photoPath.Length <= 0)//no picture
+                    { tSuc = item.post(twitterMessage); }
+                    else//1 picture
+                    { tSuc = item.post(twitterMessage, photoPath); }
+                    if (!tSuc) { MessageBox.Show("Twitter failed to post", "twitter failure", MessageBoxButton.OK, MessageBoxImage.Error); }
                 }
             }
-            catch(Exception ex) { tSuc = false; }
-            
+
             //--------------------------------------------
 
             // Email Posting Logic
             Sub = "West Chest Community Foundation E-Blast";
             foreach (var item in gMail)
-            { 
-                var client = new SmtpClient("smtp.gmail.com", 587);
-                client.EnableSsl = true;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(item.User, item.Password);
-                try
-                {
-                    // Create instance of message
-                    MailMessage emailMessage = new MailMessage(); 
-                    var emailSendingQuery = db.ExecuteQuery<string>("SELECT EmailAddress FROM dbo.Email");
-                    foreach (var temp in emailSendingQuery)
-                    { emailMessage.Bcc.Add(temp); }
-                     
-                    //Word docs end with .Docx    Excel with .xlsx   Pdf with .pdf   Powerpoint with .pptx   images with appropiate file typ, .jpg, .png, etc.
-                    //message.Attachments.Add(new Attachment(@"M:\EmailTester.Docx"));
+            {
+               
+                    if (SendingEmailAccounts.Contains(item.User))
+                    {
+                        var client = new SmtpClient("smtp.gmail.com", 587);
+                        client.EnableSsl = true;
+                        client.UseDefaultCredentials = false;
+                        client.Credentials = new NetworkCredential(item.User, item.Password);
+                        try
+                        {
+                            // Create instance of message
+                            MailMessage emailMessage = new MailMessage();
+                            var emailSendingQuery = db.ExecuteQuery<string>("SELECT EmailAddress FROM dbo.Email");
+                            foreach (var temp in emailSendingQuery)
+                            { emailMessage.Bcc.Add(temp); }
 
-                    // Set sender
-                    emailMessage.From = new MailAddress(item.User);
-                    // Set subject
-                    emailMessage.Subject = Sub;
-                    //// Set body of message
-                    emailMessage.Body = message;
-                    // Send the message
-                    client.Send(emailMessage);
-                }
-                catch (Exception ex)
-                {
-                    StreamWriter w = new StreamWriter("errorLog.txt");
-                    w.Write(ex.Message + "\n" + "Email" + DateTime.Now + "\n\n");
-                    w.Close();
-                    MessageBox.Show("Email failed to send.","Email failed",MessageBoxButton.OK,MessageBoxImage.Error);
-                }
+                            //Word docs end with .Docx    Excel with .xlsx   Pdf with .pdf   Powerpoint with .pptx   images with appropiate file typ, .jpg, .png, etc.
+                            //message.Attachments.Add(new Attachment(@"M:\EmailTester.Docx"));
+
+                            // Set sender
+                            emailMessage.From = new MailAddress(item.User);
+                            // Set subject
+                            emailMessage.Subject = Sub;
+                            //// Set body of message
+                            emailMessage.Body = message;
+                            // Send the message
+                            client.Send(emailMessage);
+                        }
+                        catch (Exception ex)
+                        {
+                            StreamWriter w = new StreamWriter("errorLog.txt");
+                            w.Write(ex.Message + "\n" + "Email" + DateTime.Now + "\n\n");
+                            w.Close();
+                            MessageBox.Show("Email failed to send.", "Email failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
             }
 
-
-
             //Displays results-----------------------------------------------------------
-            if (tSuc && postSuccess) { MessageBox.Show("Both Twitter and Facebook posted successfully",
-                "Success", MessageBoxButton.OK, MessageBoxImage.Information);}
-            else if (tSuc) { MessageBox.Show("Something went wrong with Facebook, but Twitter Succeeded.",
-                "Partial Success",MessageBoxButton.OK,MessageBoxImage.Exclamation);}
-            else if (postSuccess) { MessageBox.Show("Something went wrong with Twitter, but Facebook Succeeded.",
-                "Partial Success", MessageBoxButton.OK, MessageBoxImage.Exclamation); }
-            else MessageBox.Show("neither Facbook nor Twitter worked", 
-                "Critical Failure", MessageBoxButton.OK,MessageBoxImage.Error);
+            if (tSuc && postSuccess)
+            {
+                MessageBox.Show("Both Twitter and Facebook posted successfully",
+"Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
         }
 
@@ -241,7 +285,7 @@ namespace WCCFNew
             {
 
                 RemaininChar.Foreground = Brushes.LimeGreen;
-                RemaininChar.Content = "Characters remaining: " + Convert.ToString( MAX_CHARS - TwitterText.Text.Length);
+                RemaininChar.Content = "Characters remaining: " + Convert.ToString(MAX_CHARS - TwitterText.Text.Length);
             }
 
 
@@ -253,7 +297,7 @@ namespace WCCFNew
 
             TwitterText.Text = EventText.Text;
 
-        if (TwitterText.Text.Length >= MAX_CHARS)
+            if (TwitterText.Text.Length >= MAX_CHARS)
             {
                 string charLim = EventText.Text.Substring(0, 140);
                 TwitterText.Text = charLim;
@@ -262,7 +306,7 @@ namespace WCCFNew
             }
             else
             {
-                
+
                 RemaininChar.Foreground = Brushes.LimeGreen;
                 RemaininChar.Content = "Characters remaining: " + Convert.ToString(TwitterText.MaxLength - EventText.Text.Length);
             }
@@ -280,7 +324,7 @@ namespace WCCFNew
             dlg.Filter = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg"; // JPG and JPEG files are the only ones usable right now
 
             // Display OpenFileDialog by calling ShowDialog method
-            bool result = (bool) dlg.ShowDialog();
+            bool result = (bool)dlg.ShowDialog();
 
             // Get the selected file name and display in a Textbox
             if (result)
@@ -299,15 +343,6 @@ namespace WCCFNew
         {
             SettingsPG sp = new SettingsPG();
             NavigationService.Navigate(sp);
-        }
-
-        private void TwitterAdd_Click(object sender, RoutedEventArgs e)
-        {
-            Twit temp = new Twit();
-            if(temp.authorize(Interaction.InputBox("Verification Code:", "Verify")))
-            { MessageBox.Show("Successful verification!");}
-
-            twitter.Add(temp);
         }
     }
 }
